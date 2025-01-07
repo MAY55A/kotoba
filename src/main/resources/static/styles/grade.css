@@ -1,0 +1,76 @@
+@import url("shared.css");
+:root {
+    --kanji-cell-width: clamp(30px,5vw,50px);
+}
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 2em;
+    gap: 3em;
+}
+header {
+    width: 60%;
+    background-color: var(--light-pink);
+    box-shadow: 0 10px 15px 0 hsla(0, 0%, 0%, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    padding: 20px 30px;
+    border: var(--dashed-pink-border);
+
+    .progress {
+        width:clamp(8em, 40%, 15em);
+    }
+}
+section#grade-content {
+    width: clamp(10vw, 90%, 50vw);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(0.7em, 2vw, 2em) clamp(0.5em, 1vw, 1em);
+    //grid-template-columns: repeat(auto-fill, minmax(var(--kanji-cell-width), 1fr));
+
+    span {
+        width: var(--kanji-cell-width);
+        border: var(--dashed-pink-border);
+        padding: 5px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: clamp(12px, 2vw, 18px);
+        box-shadow: 0 5px 10px 0 hsla(0, 0%, 0%, 0.2);
+
+        &.test {
+            width: calc(var(--kanji-cell-width)*2);
+        }
+
+        &.final-test {
+            width: calc(var(--kanji-cell-width)*2);
+            flex-grow: 1;
+        }
+
+        &.unlocked {
+            background-color: var(--saturated-yellow);
+        }
+        &.locked {
+            background-color: var(--yellow);
+        }
+
+        a {
+            color: inherit;
+        }
+    }
+}
+
+
+h1 {
+    font-size: clamp(1.3em, 4vw, 1.7em);
+    text-align: center;
+    margin-bottom: 1em;
+}
+h2 {
+    color: var(--grey);
+    font-size: 1em;
+}

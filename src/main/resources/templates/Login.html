@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/styles/signup_login.css}">
+    <title>KOTOBA | LOGIN</title>
+</head>
+<body>
+    <main>
+        <a class="go-back" href="/" title="go back">⬅</a>
+        <h1>Login</h1>
+        <form id="login" th:action="@{/login}" method="post">
+            <div class="fields">
+            <label for="username">User Name :</label>
+            <input type="email" id="username" name="username" placeholder="enter username..." required>
+            <label for="password">Password :</label>
+            <input type="password" id="password" name="password" placeholder="enter password..." required>
+                <div th:if="${param.error}" id="message">
+                    Invalid username or password.
+                </div></div>
+            <img th:src="@{/images/cats.png}" alt="cute cats background" id="login-img">
+            <button type="submit">CONFIRM</button>
+        </form>
+        <h2>Or</h2>
+        <a href="/oauth2/authorization/google" id="google"><img th:src="@{/icons/google.png}" alt="google icon"><span>Login with Google</span></a>
+        <p>You don't have an account ? <a href="/signup" id="redirect">Sign up</a></p>
+    </main>
+</body>
+</html>

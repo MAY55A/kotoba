@@ -1,0 +1,75 @@
+@import url("shared.css");
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1em;
+    height: 5em;
+    background-color: var(--saturated-yellow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--navbar-font);
+    z-index: 1000;
+    a {
+        color: var(--pink);
+    }
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+    &.nav-items {
+        display: flex;
+        flex: 50%;
+        justify-content: right;
+        margin: inherit;
+
+        li {
+            margin-right: 2em;
+            &:active {
+                color: var(--saturated-pink);
+            }
+        }
+    }
+}
+
+.logo {
+    font-family: var(--navbar-font);
+    font-size: var(--logo-font-size);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+        margin-bottom: -10px;
+    }
+}
+
+#account {
+    a {
+        padding: 0.3em 1em;
+        margin-left: 1em;
+        border-radius: 10px;
+    }
+
+    img {
+        width: 50px;
+        border-radius: 20px;
+        border: var(--dashed-pink-border);
+    }
+}
+
+.signup {
+    background-color: var(--saturated-pink);
+    color: var(--whitesh-pink);
+}
+
+.login {
+    border: 1px solid var(--pink);
+}
+
+main {
+    margin-top: 5em;
+}

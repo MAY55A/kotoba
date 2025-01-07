@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/home.css}">
+    <title>KOTOBA | HOME</title>
+</head>
+<body>
+    <header>
+        <a class="logo" href="/">
+            <span>言葉</span>
+            <span>KOTOBA</span>
+        </a>
+        <ul class="nav-items">
+            <li><a href="/learn">Start Learning</a></li>
+            <li><a href="/">Start a quiz</a></li>
+        </ul>
+        <div id="account">
+        </div>
+    </header>
+    <script th:src="@{/scripts/userFunctions.js}"></script>
+    <script th:src="@{/scripts/loadNavBar.js}"></script>
+    <script>
+        fetchUserData().then((user) => {
+            loadNavBar(user);
+        })
+    </script>
+    <main>
+        <div class="hero1">
+            <div class="hero-img1"></div>
+            <h1>
+                Welcome to KOTOBA ! <br>
+                Start your Japanese learning journey today.
+            </h1>
+        </div>
+        <form class="search-bar" id="search-bar" onsubmit="return false;">
+            <button onclick="search()" type="button">search</button>
+            <input type="text" placeholder="enter kanji..." id="search-input" required>
+        </form>
+        <div class="hero2">
+            <p>
+                Features: <br>
+                - Learn Kanji: Detailed stroke and radical info with some examples<br>
+                - kanji tests: test what you learned with grade tests<br>
+                - Random quizzes: test your Japanese skills with quizzes<br>
+                - Progress Tracking: see your progress and achievements<br>
+                And more to come...
+            </p>
+            <div class="hero-img2"></div>
+        </div>
+        <div class="word-section">
+            <p>Random Word</p>
+            <span class="word" id="random-word">...</span>
+            <div class="word-details">
+                <p id="word-meaning"></p>
+                <p id="word-pronunciation">Loading...</p>
+            </div>
+        </div>
+    </main>
+    <script th:src="@{/scripts/home.js}"></script>
+    <script>getRandom()</script>
+    <footer class="site-footer mt-4">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h5>Découvrez-nous</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/">home</a></li>
+                        <li><a href="login">connect</a></li>
+                        <li><a href="/signup">register</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li>email : mayssagnm@gmail.com</li>
+                        <li>tel : 98 765 432</li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <a href="#"><img th:src="@{/icons/github.png}" alt="github icon" width="30"></a>&nbsp;
+                    <a href="#"><img th:src="@{/icons/linkedin.png}" alt="linkedin icon" width="30"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright py-4">
+            <p>©2025 Copyright KOTOBA</p>
+        </div>
+    </footer>
+</body>
+</html>

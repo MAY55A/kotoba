@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/styles/kanji_test.css}">
+    <title>KOTOBA | Kanji | ${kanji}</title>
+    <script>
+
+    </script>
+</head>
+<body>
+    <main>
+        <div id="loading" class="modal-overlay">
+            <div>
+                <div class="spinner"></div>
+                <p>Loading, please wait...</p>
+            </div>
+        </div>
+        <a class="go-back" th:href="@{'/learn/grades/' + ${grade}}" title="go back">⬅</a>
+        <header>
+            <h1><span id="kanji-audio" class="audio-symbol">🔊</span><span th:text="${kanji}" id="kanji"></span></h1>
+            <input th:value="${id}" type="hidden" id="kanji-id">
+            <div id="meaning"></div>
+            <div id="readings"></div>
+            <span class="heart" onclick="updateFavorites(${kanji})">&hearts;</span>
+        </header>
+        <section id="kanji-info">
+            <div>
+                <h2>Radical</h2>
+                <div id="radicals"></div>
+            </div>
+            <div>
+                <h2>Examples</h2>
+                <div id="examples"></div>
+            </div>
+            <div>
+                <h2>Mnemonic hint</h2>
+                <div id="mn-hint"></div>
+            </div>
+            <video id="kanji-video" controls>
+                <source src="" type="video/mp4">
+            </video>
+            <script th:src="@{/scripts/userFunctions.js}"></script>
+            <script th:src="@{/scripts/displayKanji.js}"></script>
+        </section>
+        <footer>
+            <button id="previous" class="hidden">previous</button>
+            <button id="next">next</button>
+        </footer>
+    </main>
+</body>
+</html>

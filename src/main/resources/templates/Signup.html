@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/styles/signup_login.css}">
+    <title>KOTOBA | SIGN UP</title>
+</head>
+<body>
+    <main>
+        <a class="go-back" href="/" title="go back">⬅</a>
+        <h1>Create an Account</h1>
+        <form id="signup">
+            <div class="fields">
+            <label>Email :</label>
+            <input id="email" type="email" placeholder="enter email..." required>
+            <label>Username :</label>
+            <input id="username" type="text" placeholder="enter username..." required>
+            <label>Password :</label>
+            <input id="password1" type="password" placeholder="enter password..." required>
+            <label>Confirm Password :</label>
+            <input id="password2" type="password" placeholder="enter password again..." required>
+            </div>
+            <img th:src="@{/images/girl2.png}" alt="cute background">
+            <button type="submit">CONFIRM</button>
+            <div id="message"></div>
+        </form>
+        <h2>Or</h2>
+        <a href="/oauth2/authorization/google" id="google"><img th:src="@{/icons/google.png}" alt="google icon"><span>Sign up with Google</span></a>
+        <p>You already have an account ? <a href="/login" id="redirect">Login</a></p>
+    </main>
+    <script>
+        document.getElementById("signup").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const username = document.getElementById("username").value;
+            const password1 = document.getElementById("password1").value;
+            const password2 = document.getElementById("password2").value;
+            const message = document.getElementById("message");
+            if(password1 !== password2) {
+                message.innerText = "Passwords do not match";
+            } else {
+                const userData = {
+                    email: email,
+                    username: username,
+                    password: password1
+                };
+
+                try {
+                    const response = await fetch("/api/auth/signup", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(userData)
+                    });
+                    text = await response.text();
+                    if(text.length > 50)
+                        message.innerText = "An error occurred";
+                    else
+                        message.innerText = text
+
+                    if (response.ok)
+                        window.location.href = "/login";
+                } catch (error) {
+                    console.log("An error occurred: " + error.message);
+                    message.innerText = "An error occurred";
+
+                }
+            }
+        });
+    </script>
+</body>
+</html>

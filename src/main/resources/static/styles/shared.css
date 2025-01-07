@@ -1,0 +1,121 @@
+@import url(https://fonts.googleapis.com/css2?family=Jaro);
+@import url(https://fonts.googleapis.com/css2?family=Kaushan+Script);
+
+:root {
+    --saturated-yellow: #FEE255;
+    --light-yellow: #FFF3B4;
+    --yellow: #FFF3B4;
+    --pink: #FD969A;
+    --light-pink: #FFCBD1;
+    --saturated-pink: #FE6A86;
+    --very-light-pink: #FFDCE0;
+    --whitesh-pink: #FFF5F6;
+    --whitesh-yellow: rgba(255, 243, 180, 0.3);
+    --navbar-font: "Jaro";
+    --normal-font: "Kaushan Script";
+    --logo-font-size: 1.2em;
+    --normal-font-size: clamp(0.8em, 2vw, 1.1em);
+    --normal-font-color: rgba(30, 30, 30, 0.7);
+    --grey: rgba(30, 30, 30, 0.5);
+    --light-grey: rgba(30, 30, 30, 0.2);
+    --green: #66cc5b;
+    --red: #cc5b5b;
+    --dashed-pink-border: 2px dashed var(--pink);
+    --solid-pink-border: 1px solid var(--pink);
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-size: var(--normal-font-size);
+    font-family: var(--normal-font);
+    color: var(--normal-font-color);
+}
+
+input, button {
+    height: 3em;
+    border-radius: 10px;
+    border: var(--dashed-pink-border);
+    outline-color: var(--saturated-pink);
+    font-family: var(--normal-font);
+    padding: 0 2em;
+}
+input{
+    width: 30%;
+    background-color: var(--whitesh-pink);
+    box-shadow: 5px 5px 10px 5px hsla(217, 19%, 35%, 0.1);
+}
+
+button {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--saturated-pink);
+}
+
+.progress {
+    border: var(--solid-pink-border);
+    background-color: white;
+
+    .progress-bar {
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+}
+
+.go-back {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    font-size: 2em;
+    font-weight: bolder;
+    color: var(--saturated-pink);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Ensure it's above other elements */
+}
+
+.hidden {
+    display: none;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid var(--yellow); /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading {
+    background-color: white;
+    p {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+}
