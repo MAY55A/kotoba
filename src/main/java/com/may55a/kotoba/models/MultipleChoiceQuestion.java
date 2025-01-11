@@ -22,4 +22,10 @@ public class MultipleChoiceQuestion extends Question {
     public boolean checkAnswer(String userAnswer) {
         return correctAnswer.equals(userAnswer);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Question q = (Question) o;
+        return q.type.equals(this.type) && q.text.equals(this.text) && q.word.equals(this.word);
+    }
 }

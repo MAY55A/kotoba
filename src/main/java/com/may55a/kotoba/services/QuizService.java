@@ -17,7 +17,7 @@ public class QuizService {
     }
 
     public Quiz getUnitTest(String grade, int nbTest) {
-        List<String> list = getListKanji(grade, (nbTest-1)*10, nbTest*10+1);
+        List<String> list = getListKanji(grade, (nbTest-1)*10, nbTest*10);
         if(list.isEmpty())
             return null;
         return generateTest(list, 7, 75);
@@ -37,8 +37,8 @@ public class QuizService {
         Random random = new Random();
 
         Collections.shuffle(kanjiList);
-        // add a 'fill in the blank question' every 6 questions
-        for(int i=0; i<nbQuestions && i<kanjiList.size(); i += 6) {
+        // add a 'fill in the blank question' every 7 questions
+        for(int i=0; i<nbQuestions && i<kanjiList.size(); i += 7) {
             KanjiDetails randomKanji = kanjiService.getKanjiDetails(kanjiList.get(i));
             FillInBlankQuestion generatedFIBQ = generateFillInBlankQuestion(randomKanji);
             if (generatedFIBQ != null) {
@@ -50,7 +50,7 @@ public class QuizService {
         while (questions.size() < nbQuestions) {
             QuestionType type = QuestionType.values()[random.nextInt(QuestionType.values().length)];
             MultipleChoiceQuestion generatedMCQ = generateMultipleChoiceQuestion(kanjiList, 4, type);
-            if(generatedMCQ != null) {
+            if(generatedMCQ != null && !questions.contains(generatedMCQ)) {
                 questions.add(generatedMCQ);
                 minScore += generatedMCQ.getPoints();
             }
