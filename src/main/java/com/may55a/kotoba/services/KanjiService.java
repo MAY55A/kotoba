@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.may55a.kotoba.models.KanjiDetails;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -131,6 +132,7 @@ public class KanjiService {
                 .block();
         return response;
     }
+    @Cacheable(value = "kanjiDetailsCache", key = "#query")
     public KanjiDetails getKanjiDetails(String query) {
 
         String response =  webClient.get()
@@ -164,6 +166,7 @@ public class KanjiService {
 
     }
 
+    @Cacheable(value = "gradeKanjiCache", key = "#grade")
     public String getAllKanjiByGrade(String grade) {
 
         String response =  webClient.get()
