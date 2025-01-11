@@ -46,6 +46,7 @@ nextBtn.addEventListener("click", () => {
             }
         }
     } else {
+        playAudio("/sounds/next.mp3");
         nextBtn.innerText = "check";
         nextBtn.classList.add("check");
         nextBtn.disabled = true;
@@ -67,6 +68,7 @@ async function fetchTest() {
         let result = await response.json();
         console.log(result);
         document.getElementById('loading').classList.add("hidden");
+        playAudio("/sounds/start.mp3");
         return result;
     } catch (error) {
         console.error("Error fetching test :", error);
@@ -108,7 +110,7 @@ function displayQuestion() {
                             selected = div;
                             nextBtn.disabled = false;
                         }
-                        console.log("Selected option:", selected);
+                        playAudio("/sounds/pick.wav");
                     }
                 });
                 newSection.appendChild(div);
@@ -132,6 +134,7 @@ function showTestResult() {
     let resultContent;
     if(totalPoints < test.requiredScore) {
         testResult.classList.add("failed");
+        playAudio("/sounds/lose.mp3");
         resultContent  = `
             <h2>Sorry ! You did not pass </h2>
             <p>Your score: <span>${totalPoints}</span></p>
@@ -144,7 +147,7 @@ function showTestResult() {
             user.learningStats.xp += totalPoints;
             user.learningStats.errors += errors;
             user.learningStats.correctAnswers += correctAnswers;
-            isNewTest = user.learningStats.currentGrade == grade && user.learningStats.gradeProgress == test*10;
+            isNewTest = user.learningStats.currentGrade == grade && user.learningStats.gradeProgress == nbtest*10;
             if(isNewTest) {
                 user.learningStats.testsPassed++;
                 user.learningStats.gradeProgress++;
@@ -157,6 +160,7 @@ function showTestResult() {
             updateUserData(user);
         });
         testResult.classList.add("passed");
+        playAudio("/sounds/win.wav");
         let msg = "";
         if(isNewTest) {
             if (test === "final")
@@ -180,12 +184,14 @@ function showTestResult() {
 }
 
 function showGoodResult(points) {
+    playAudio("/sounds/correct.mp3");
     result.innerHTML = `<span class="correct">CORRECT !</span><br>
                 <span id="xp">+ ${points} XP</span><br>
                 <img src="/images/satisfiedCat.jpeg" alt="satisfied cat">`;
 }
 
 function showBadResult() {
+    playAudio("/sounds/wrong.mp3");
     result.innerHTML = `<span class="wrong">INCORRECT !</span><br>
                         <img src="/images/annoyedCat.jpeg" alt="annoyed cat">`;
 }
@@ -203,6 +209,7 @@ function updateProgressBar() {
 }
 
 function displayExitPopup(bool) {
+    playAudio("/sounds/pop.mp3");
     let exitPopup = document.getElementById("confirmation-modal");
     if(bool)
         exitPopup.classList.remove("hidden");

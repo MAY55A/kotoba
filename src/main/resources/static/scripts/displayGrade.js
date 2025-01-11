@@ -55,7 +55,5 @@ function displayAllKanji(kanjiList, user) {
     let progressRate = progress/totalUnits*100;
     progressBar.setAttribute("aria-valuenow", progressRate);
     progressBar.setAttribute("style", `width: ${progressRate}%;`);
-    progressBar.innerText = `${progressRate} %`;
-
 }
 fetchKanjiList().then((list) => fetchUserData().then((user) => displayAllKanji(list, user)));

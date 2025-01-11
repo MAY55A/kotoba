@@ -44,42 +44,40 @@ document.getElementById('examples').innerHTML = examples;
 
     let nextBtn = document.getElementById('next');
     let previousBtn = document.getElementById('previous');
+    let link;
+
     if(previousUnit.kanji != "null") {
         previousBtn.classList.remove("hidden");
         if(previousUnit.isTest !== 0) {
-            previousBtn.addEventListener("click", function () {
-                window.location.href = `/learn/grades/${data.grade}/tests/${previousUnit.isTest}`;
-            });
+            link = `/learn/grades/${data.grade}/tests/${previousUnit.isTest}`;
             previousBtn.innerText = "TEST";
             nextBtn.classList.add("test");
         } else {
-            previousBtn.addEventListener("click", function () {
-                window.location.href = `/learn/grades/${data.grade}/${previousUnit.kanji}`;
-            })
+            link = `/learn/grades/${data.grade}/${previousUnit.kanji}`;
         }
+        previousBtn.addEventListener("click", function () {
+            playAudio("/sounds/next.mp3");
+            window.location.href = link;
+        });
     }
     if(nextUnit.kanji == "null") {
-        nextBtn.addEventListener("click", async function () {
-            await addXP(data);
-            window.location.href = `/learn/grades/${data.grade}/tests/final`;
-        });
+        link = `/learn/grades/${data.grade}/tests/final`;
         nextBtn.innerText = "FINAL TEST";
         nextBtn.classList.add("test");
     } else {
         if(nextUnit.isTest !== 0) {
-            nextBtn.addEventListener("click", async function () {
-                await addXP(data);
-                window.location.href = `/learn/grades/${data.grade}/tests/${nextUnit.isTest}`;
-            });
+            link = `/learn/grades/${data.grade}/tests/${nextUnit.isTest}`;
             nextBtn.innerText = "TEST";
             nextBtn.classList.add("test");
         } else {
-            nextBtn.addEventListener("click", async function () {
-                await addXP(data);
-                window.location.href = `/learn/grades/${data.grade}/kanji?kanji=${nextUnit.kanji}&id=${id + 1}`;
-            })
+            link = `/learn/grades/${data.grade}/kanji?kanji=${nextUnit.kanji}&id=${id + 1}`;
         }
     }
+    nextBtn.addEventListener("click", async function () {
+        playAudio("/sounds/next.mp3");
+        await addXP(data);
+        window.location.href = link;
+    });
 }
 function playAudio(audioUrl) {
     const audio = new Audio(audioUrl);

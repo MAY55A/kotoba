@@ -11,13 +11,17 @@ main {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 5em;
+    margin-top: 2em;
 
     .hero-img1 {
-        height: 12em;
-        width: 12em;
+        height: calc(20vh + 20vw);
+        width: calc(20vh + 20vw);
         background-size: cover;
-        background-image: url("/images/girl1.jpg");
+        background-image: url("/images/girl3.png");
+    }
+
+    h1 {
+        font-size:  clamp(1.5em, 1.5vh + 1.5vw, 2em);
     }
 }
 
@@ -37,6 +41,7 @@ main {
 
 .hero2 {
     height: 12em;
+    min-height: fit-content;
     display: flex;
     justify-content: space-between;
     background-color: #fffac8;
@@ -45,6 +50,7 @@ main {
     p {
         align-self: center;
         padding-left: 5em;
+        margin-top: 1em;
     }
     .hero-img2 {
         width: 33%;

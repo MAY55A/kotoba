@@ -21,7 +21,6 @@ function loadGrades(userData) {
                             aria-valuemin="0"
                             aria-valuemax="100"
                             style="width: ${gradeProgress}%">
-                            ${gradeProgress}%
                         </div>
                     `;
             statusElement.insertAdjacentElement("beforebegin", progressBarDiv);
@@ -51,7 +50,6 @@ function loadStats(learningStats) {
     totalKanjiBar.innerText = `${totalKanjiRate} %`;
     errorsBar.setAttribute("aria-valuenow", errorRate);
     errorsBar.setAttribute("style", `width: ${errorRate}%;`);
-    errorsBar.innerText = `${errorRate} %`;
 }
 
 function loadAchievements(learningStats) {
