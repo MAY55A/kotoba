@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/kanji")
 public class KanjiController {
@@ -42,7 +44,7 @@ public class KanjiController {
         return kanjiService.getPreviousKanji(kanji, grade);
     }
     @GetMapping("")
-    public String getKanjiByGrade(@RequestParam String grade) {
+    public List<String> getKanjiByGrade(@RequestParam String grade) {
         return kanjiService.getAllKanjiByGrade(grade);
     }
 }

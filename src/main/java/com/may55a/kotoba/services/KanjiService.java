@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.may55a.kotoba.models.KanjiDetails;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +23,12 @@ import java.util.Map;
 public class KanjiService {
 
     private final WebClient webClient;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public KanjiService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.build();
+        this.objectMapper = new ObjectMapper();
     }
 
     public String getRandomWord() {
@@ -40,6 +41,7 @@ public class KanjiService {
         return response;
     }
 
+    @Cacheable(value = "offsetWordCache", key = "#offset + '-' + #limit")
     public List<Map<String, Object>> getOffsetList(int offset, int limit) {
         String response = webClient.get()
                 .uri("https://jlpt-vocab-api.vercel.app/api/words?offset=" + offset + "&limit=" + limit)
@@ -49,7 +51,6 @@ public class KanjiService {
 
         List<Map<String, Object>> wordList = new ArrayList<>();
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(response);
             JsonNode wordsNode = rootNode.get("words");
 
@@ -145,7 +146,6 @@ public class KanjiService {
         KanjiDetails kanjiDetails = new KanjiDetails();
         try {
             // Parse JSON using ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(response);
 // Extract necessary fields
             kanjiDetails.setKanji(root.path("kanji").path("character").asText(""));
@@ -167,53 +167,44 @@ public class KanjiService {
     }
 
     @Cacheable(value = "gradeKanjiCache", key = "#grade")
-    public String getAllKanjiByGrade(String grade) {
+    public List<String> getAllKanjiByGrade(String grade) {
 
         String response =  webClient.get()
                 .uri("https://kanjiapi.dev/v1/kanji/grade-" + grade)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-        return response;
+        try {
+            return objectMapper.readValue(response, List.class);
+        } catch (IOException e) {
+                e.printStackTrace();
+                return new ArrayList<>();
+        }
     }
 
     public String getNextKanji(String current, String grade) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String kanji = getAllKanjiByGrade(grade);
+        List<String> list = getAllKanjiByGrade(grade);
         String next = null;
         int test = 0;
-        try {
-            List<String> list = objectMapper.readValue(kanji, List.class);
-                int index = list.indexOf(current);
-                if (index != -1 ) {
-                        if ((index + 1) % 10 == 0)
-                            test = (index+1) / 10;
-                        if (index < list.size() - 1)
-                            next = String.valueOf(list.get(index + 1));
-                }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        int index = list.indexOf(current);
+        if (index != -1 ) {
+            if ((index + 1) % 10 == 0)
+                test = (index+1) / 10;
+            if (index < list.size() - 1)
+                next = list.get(index + 1);
         }
         return "{\"kanji\": \"" + next + "\", \"isTest\": " + test + " }";
     }
     public String getPreviousKanji(String current, String grade) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String kanji = getAllKanjiByGrade(grade);
+        List<String> list = getAllKanjiByGrade(grade);
         String previous = null;
         int test = 0;
-        try {
-            List<String> list = objectMapper.readValue(kanji, List.class);
-            int index = list.indexOf(current);
-            if (index != -1 && index != 0) {
-                if ((index+1) % 10 == 1) {
-                    test = (index+1) / 10;
-                }
-                previous = String.valueOf(list.get(index - 1));
+        int index = list.indexOf(current);
+        if (index != -1 && index != 0) {
+            if ((index+1) % 10 == 1) {
+                test = (index+1) / 10;
             }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+            previous = list.get(index - 1);
         }
         return "{\"kanji\": \"" + previous + "\", \"isTest\": " + test + " }";
     }

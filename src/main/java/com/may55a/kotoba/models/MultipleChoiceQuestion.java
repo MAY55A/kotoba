@@ -3,6 +3,7 @@ package com.may55a.kotoba.models;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class MultipleChoiceQuestion extends Question {
@@ -25,7 +26,14 @@ public class MultipleChoiceQuestion extends Question {
 
     @Override
     public boolean equals(Object o) {
-        Question q = (Question) o;
-        return q.type.equals(this.type) && q.text.equals(this.text) && q.word.equals(this.word);
+        if(o instanceof Question q) {
+            return q.type.equals(this.type) && q.text.equals(this.text) && Objects.equals(q.word, this.word);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, text, word);
     }
 }
