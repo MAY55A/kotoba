@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.may55a.kotoba.models.KanjiDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,11 @@ public class KanjiService {
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
+    @Value("${rapidapi.key}")
+    private String rapidApiKey;
+
+    @Value("${rapidapi.host}")
+    private String rapidApiHost;
 
     @Autowired
     public KanjiService(WebClient.Builder webClientBuilder) {
@@ -74,8 +80,8 @@ public class KanjiService {
 
          String response =  webClient.get()
                 .uri("https://kanjialive-api.p.rapidapi.com/api/public/search/" + query)
-                .header("x-rapidapi-key", "e4471af680mshb83c20bd9722867p17f476jsn769088340dd1")
-                .header("x-rapidapi-host", "kanjialive-api.p.rapidapi.com")
+                .header("x-rapidapi-key", rapidApiKey)
+                .header("x-rapidapi-host", rapidApiHost)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -126,8 +132,8 @@ public class KanjiService {
     public String getKanji(String query) {
         String response =  webClient.get()
                 .uri("https://kanjialive-api.p.rapidapi.com/api/public/kanji/" + query)
-                .header("x-rapidapi-key", "e4471af680mshb83c20bd9722867p17f476jsn769088340dd1")
-                .header("x-rapidapi-host", "kanjialive-api.p.rapidapi.com")
+                .header("x-rapidapi-key", rapidApiKey)
+                .header("x-rapidapi-host", rapidApiHost)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -138,8 +144,8 @@ public class KanjiService {
 
         String response =  webClient.get()
                 .uri("https://kanjialive-api.p.rapidapi.com/api/public/kanji/" + query)
-                .header("x-rapidapi-key", "e4471af680mshb83c20bd9722867p17f476jsn769088340dd1")
-                .header("x-rapidapi-host", "kanjialive-api.p.rapidapi.com")
+                .header("x-rapidapi-key", rapidApiKey)
+                .header("x-rapidapi-host", rapidApiHost)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
