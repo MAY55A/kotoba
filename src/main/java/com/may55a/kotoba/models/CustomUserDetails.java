@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
         this.description = user.getDescription();
         this.learningStats = user.getLearningStats();
         this.authorities = user.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
+                .map(role -> new SimpleGrantedAuthority(role.toString()))
                 .collect(Collectors.toSet());
     }
 

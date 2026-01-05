@@ -19,6 +19,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
     public User registerUser(String email, String userName, String password) throws IllegalArgumentException{
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("Email already in use");
@@ -32,7 +35,7 @@ public class UserService {
         user.setUsername(userName);
         user.setPassword(passwordEncoder.encode(password));
         user.setAuthProvider(AuthProvider.LOCAL);
-        user.addRole("USER");
+        user.addRole(UserRole.USER);
         user.setLearningStats(new LearningStats());
 
         return userRepository.save(user);
@@ -53,7 +56,7 @@ public class UserService {
         return userRepository.findByEmail(email)
                 .orElseGet(() -> {
                     OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-                    return new CustomOAuth2UserService().createUser(oAuth2User);
+                    return customOAuth2UserService.createUser(oAuth2User);
                 });
     }
     public void updateUser(User updatedUser) {

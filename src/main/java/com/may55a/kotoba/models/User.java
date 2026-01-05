@@ -45,11 +45,12 @@ public class User implements Serializable {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
+    private Set<UserRole> roles = new HashSet<>();
 
     @Embedded
     private LearningStats learningStats;
 
-    public void addRole(String role) {
+    public void addRole(UserRole role) {
         roles.add(role);
     }
 

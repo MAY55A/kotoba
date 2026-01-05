@@ -18,7 +18,7 @@ public class CustomOAuth2User extends DefaultOAuth2User {
 
     public CustomOAuth2User(User user, Map<String, Object> attributes) {
         super(user.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
+                .map(role -> new SimpleGrantedAuthority(role.toString()))
                 .collect(Collectors.toList()), attributes, user.getEmail());
         this.profilePicture = user.getProfilePicture();
         this.learningStats = user.getLearningStats();

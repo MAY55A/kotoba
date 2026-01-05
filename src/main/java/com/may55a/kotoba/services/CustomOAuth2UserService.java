@@ -1,20 +1,14 @@
 package com.may55a.kotoba.services;
 
-import com.may55a.kotoba.models.AuthProvider;
-import com.may55a.kotoba.models.CustomOAuth2User;
-import com.may55a.kotoba.models.LearningStats;
-import com.may55a.kotoba.models.User;
+import com.may55a.kotoba.models.*;
 import com.may55a.kotoba.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -54,7 +48,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setUsername(oAuth2User.getAttribute("name"));
         user.setProfilePicture(oAuth2User.getAttribute("picture"));
         user.setAuthProvider(AuthProvider.GOOGLE);
-        user.addRole("USER");
+        user.addRole(UserRole.USER);
         user.setLearningStats(new LearningStats());
         return userRepository.save(user);
     }
