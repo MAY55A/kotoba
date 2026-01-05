@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
+@Table(name = "users")
 public class User implements Serializable {
 
     @Id
@@ -22,21 +23,22 @@ public class User implements Serializable {
 
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(nullable = false, unique = true)
     private String username;
 
     @ToString.Exclude
     @JsonIgnore
-    @Column()
+    @Column(nullable = true)
     private String password;
 
-    @Column()
+    @Column
     private String profilePicture;
 
-    @Column()
+    @Column
     private String description;
 
-    @Column()
+    @Column
     private String favourites = "";
 
     @Enumerated(EnumType.STRING)
@@ -44,7 +46,13 @@ public class User implements Serializable {
     private AuthProvider authProvider;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles = new HashSet<>();
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role"})
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Set<UserRole> roles = new HashSet<>();
 
     @Embedded
