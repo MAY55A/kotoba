@@ -1,46 +1,31 @@
+import {fetchKanjiData} from "../api/kanjiApi.js";
+import {fetchUserData, updateUserData} from "../api/userApi.js";
+import {bindAudioSymbols, playAudio} from "../utils/audio.js";
+
+const kanji = document.getElementById("kanji").innerHTML;
 const id = Number(document.getElementById("kanji-id").value);
 let nextUnit;
 let previousUnit;
-async function fetchKanjiData() {
-    try {
-        const kanji = document.getElementById("kanji").innerHTML;
-        const response = await fetch(`/api/kanji/${kanji}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        let result = await response.json();
-        let nextResponse = await fetch(`/api/kanji/next?kanji=${kanji}&grade=${result.grade}`);
-        let previousResponse = await fetch(`/api/kanji/previous?kanji=${kanji}&grade=${result.grade}`);
-        nextUnit = (await nextResponse.json());
-        previousUnit = (await previousResponse.json());
-
-        return result;
-    } catch (error) {
-        console.error("Error fetching kanji data :", error);
-        window.location.href = "/error";
-    }
-}
 
 function displayKanjiData(data) {
     document.getElementById('loading').classList.add("hidden");
-        let examples = "";
+    let examples = "";
     for(let ex of data.examples.slice(0,3)) {
         examples += `<div>
-                      <span class="audio-symbol" onclick="playAudio('${ex.audio}')">🔊</span>
+                      <span class="audio-symbol" data-audio="${ex.audio}">🔊</span>
                       ${ex.japanese}<br>${ex.meaning}
                     </div>`;
     }
- document.getElementById('kanji-audio').onclick = function () {
-            playAudio("http://localhost:8080/"+data.audioPath);
-       };
-document.getElementById('examples').innerHTML = examples;
+    document.getElementById('kanji-audio').dataset.audio = "http://localhost:8080/" + data.audioPath;
+    document.getElementById('examples').innerHTML = examples;
     document.getElementById('meaning').innerText = data.meaning;
     document.getElementById('readings').innerHTML = `Onyomi : ${data.onyomi.katakana} (${data.onyomi.romaji})<br>Kunyomi : ${data.kunyomi.hiragana} (${data.kunyomi.romaji})`;
     document.getElementById('mn-hint').innerText = data.mnHint;
     document.getElementById('radicals').innerHTML = `${data.radicalDetails.character} (${data.radicalDetails.hiragana}) : ${data.radicalDetails.meaning}<br> strokes : ${data.radicalDetails.strokes}<br><img src="${data.radicalDetails.image}" alt="radical image" width="50" height="50">`;
     document.getElementById('kanji-video').querySelector('source').src = data.videoUrl;
     document.getElementById('kanji-video').load();
+
+    bindAudioSymbols(); // enables playing audio when clicking on any audio-symbol inside the current DOM
 
     let nextBtn = document.getElementById('next');
     let previousBtn = document.getElementById('previous');
@@ -55,8 +40,8 @@ document.getElementById('examples').innerHTML = examples;
         } else {
             link = `/learn/grades/${data.grade}/${previousUnit.kanji}`;
         }
-        previousBtn.addEventListener("click", function () {
-            playAudio("/sounds/next.mp3");
+        previousBtn.addEventListener("click", async function () {
+            await playAudio("/sounds/next.mp3");
             window.location.href = link;
         });
     }
@@ -74,15 +59,15 @@ document.getElementById('examples').innerHTML = examples;
         }
     }
     nextBtn.addEventListener("click", async function () {
-        playAudio("/sounds/next.mp3");
-        await addXP(data);
+        await Promise.all([
+            playAudio("/sounds/next.mp3"),
+            addXP(data)
+        ]);
+
         window.location.href = link;
     });
 }
-function playAudio(audioUrl) {
-    const audio = new Audio(audioUrl);
-    audio.play();
-}
+
 async function addXP(data) {
     const user = await fetchUserData();
 
@@ -98,4 +83,11 @@ async function addXP(data) {
         await updateUserData(user);
     }
 }
-fetchKanjiData().then((kanji) => displayKanjiData(kanji));
+
+fetchKanjiData(kanji).then((data) =>
+{
+    nextUnit = data.nextUnit
+    previousUnit = data.previousUnit
+    displayKanjiData(data.kanjiData)
+}
+);

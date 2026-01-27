@@ -1,4 +1,4 @@
-async function loadNavBar(user) {
+export async function loadNavBar(user) {
         if (user !== null) {
             document.getElementById("account").innerHTML = `
                         <a href="/logout" class="signup">logout</a>

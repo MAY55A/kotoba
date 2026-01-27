@@ -20,13 +20,6 @@
         <div id="account">
         </div>
     </header>
-    <script th:src="@{/scripts/userFunctions.js}"></script>
-    <script th:src="@{/scripts/loadNavBar.js}"></script>
-    <script>
-        fetchUserData().then((user) => {
-            loadNavBar(user);
-        })
-    </script>
     <main>
         <div class="hero1">
             <div class="hero-img1"></div>
@@ -36,8 +29,8 @@
             </h1>
         </div>
         <form class="search-bar" id="search-bar" onsubmit="return false;">
-            <button onclick="search()" type="button">search</button>
-            <input type="text" placeholder="enter kanji..." id="search-input" required>
+            <button id="search-btn" type="button">search</button>
+            <input type="text" placeholder="Enter word in English..." id="search-input" required>
         </form>
         <div class="hero2">
             <p>
@@ -59,8 +52,7 @@
             </div>
         </div>
     </main>
-    <script th:src="@{/scripts/home.js}"></script>
-    <script>getRandom()</script>
+    <script type="module" th:src="@{/scripts/pages/homePage.js}"></script>
     <footer class="site-footer mt-4">
         <div class="container py-4">
             <div class="row">

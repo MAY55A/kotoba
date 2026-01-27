@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/styles/kanji_test.css}">
-    <title>KOTOBA | Kanji | ${kanji}</title>
+    <title th:text="'KOTOBA | Kanji | ' + ${kanji}">Kotoba | Kanji</title>
     <script>
 
     </script>
@@ -41,8 +41,7 @@
             <video id="kanji-video" controls>
                 <source src="" type="video/mp4">
             </video>
-            <script th:src="@{/scripts/userFunctions.js}"></script>
-            <script th:src="@{/scripts/displayKanji.js}"></script>
+            <script type="module" th:src="@{/scripts/render/displayKanji.js}"></script>
         </section>
         <footer>
             <button id="previous" class="hidden">previous</button>

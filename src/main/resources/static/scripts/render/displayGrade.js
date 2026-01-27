@@ -1,17 +1,5 @@
-async function fetchKanjiList() {
-    try {
-        const grade = document.getElementById("grade").innerHTML;
-        console.log(grade);
-        const response = await fetch(`/api/kanji?grade=${grade}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching kanji list :", error);
-        window.location.href = "/error";
-    }
-}
+import {fetchKanjiList} from "../api/kanjiApi.js";
+import {fetchUserData} from "../api/userApi.js";
 
 function displayAllKanji(kanjiList, user) {
     document.getElementById('loading').classList.add("hidden");
@@ -56,4 +44,6 @@ function displayAllKanji(kanjiList, user) {
     progressBar.setAttribute("aria-valuenow", progressRate);
     progressBar.setAttribute("style", `width: ${progressRate}%;`);
 }
-fetchKanjiList().then((list) => fetchUserData().then((user) => displayAllKanji(list, user)));
+
+const grade = document.getElementById("grade").innerHTML;
+fetchKanjiList(grade).then((list) => fetchUserData().then((user) => displayAllKanji(list, user)));

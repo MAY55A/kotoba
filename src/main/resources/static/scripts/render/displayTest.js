@@ -1,5 +1,9 @@
+import {fetchTest} from "../api/testApi.js";
+import {fetchUserData, updateUserData} from "../api/userApi.js";
+import {bindAudioSymbols, playAudio} from "../utils/audio.js";
+
 const grade = document.getElementById("grade").value;
-const nbtest = document.getElementById("test").value;
+const nbTest = document.getElementById("test").value;
 const progressBar = document.getElementById("progress-bar");
 const text = document.getElementById('text');
 const word = document.getElementById('word');
@@ -76,6 +80,7 @@ async function fetchTest() {
     }
 }
 
+
 function displayQuestion() {
     if(current === test.questions.length)
         showTestResult();
@@ -87,11 +92,14 @@ function displayQuestion() {
         text.innerText = question.text;
         result.innerHTML = "";
         if (question.type === "SHOW_AUDIO")
-            word.innerHTML = `<span class="audio-symbol" onClick="playAudio('http://localhost:8080/${question.audio}')">🔊</span>`;
+            word.innerHTML = `<span class="audio-symbol" data-audio="http://localhost:8080/${question.audio}">🔊</span>`;
         else if (question.type === "SHOW_KANJI" && question.audio !== null)
-            word.innerHTML = `<span class="audio-symbol" onClick="playAudio('http://localhost:8080/${question.audio}')">🔊</span>${question.word}`;
+            word.innerHTML = `<span class="audio-symbol" data-audio="http://localhost:8080/${question.audio}">🔊</span>${question.word}`;
         else
             word.innerHTML = question.word;
+
+        bindAudioSymbols() // enables playing audio when clicking on any audio-symbol inside the current DOM
+
         if (question.options) {
             selected = null;
             newSection.id = "options";
@@ -132,7 +140,7 @@ function showTestResult() {
     let testResult = document.getElementById('test-result');
     let testResultModal = document.getElementById('test-result-modal');
     let resultContent;
-    if(totalPoints < test.requiredScore) {
+    if(totalPoints < test.requiredScore) { // Test failed
         testResult.classList.add("failed");
         playAudio("/sounds/lose.mp3");
         resultContent  = `
@@ -142,21 +150,23 @@ function showTestResult() {
             <img src="/images/sadCat.jpeg" alt="sad cat"><br>
             <a href="/learn/grades/${grade}">Close</a>
         `;
-    } else {
+    } else { // Test passed
         fetchUserData().then((user) => {
             user.learningStats.xp += totalPoints;
             user.learningStats.errors += errors;
             user.learningStats.correctAnswers += correctAnswers;
-            isNewTest = user.learningStats.currentGrade == grade && user.learningStats.gradeProgress == nbtest*10;
+
+            isNewTest = user.learningStats.currentGrade == grade &&
+                (nbTest == "final" || user.learningStats.gradeProgress == nbTest*10);
             if(isNewTest) {
                 user.learningStats.testsPassed++;
                 user.learningStats.gradeProgress++;
+                if(nbTest === "final" && grade != 6) { // if it's the final test of a grade (not the last grade)
+                    user.learningStats.currentGrade++;
+                    user.learningStats.gradeProgress = 0;
+                }
             }
-            if(test === "final" && grade != 6) {
-                user.learningStats.currentGrade++;
-                user.learningStats.gradeProgress = 0;
-            }
-            console.log(user);
+
             updateUserData(user);
         });
         testResult.classList.add("passed");
@@ -196,11 +206,6 @@ function showBadResult() {
                         <img src="/images/annoyedCat.jpeg" alt="annoyed cat">`;
 }
 
-function playAudio(audioUrl) {
-    const audio = new Audio(audioUrl);
-    audio.play();
-}
-
 function updateProgressBar() {
     let progressRate = current/test.questions.length*100;
     progressBar.setAttribute("aria-valuenow", progressRate);
@@ -222,6 +227,12 @@ function exitTest() {
 }
 
 fetchTest().then((testData) => {
+document.getElementById("x").addEventListener("click", ()=>displayExitPopup(true));
+document.getElementById("exit").addEventListener("click", exitTest);
+document.getElementById("cancel").addEventListener("click", ()=>displayExitPopup(false));
+
+
+fetchTest(nbTest, grade).then((testData) => {
     test = testData;
     displayQuestion(0);
 });

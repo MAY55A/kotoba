@@ -20,17 +20,7 @@
         <div id="account">
         </div>
     </header>
-    <script th:src="@{/scripts/userFunctions.js}"></script>
-    <script th:src="@{/scripts/loadNavBar.js}"></script>
-    <script th:src="@{/scripts/displayGrades.js}"></script>
-    <script>
-        fetchUserData().then((user) => {
-            loadNavBar(user);
-            loadGrades(user);
-            loadStats(user.learningStats);
-            loadAchievements(user.learningStats);
-        })
-    </script>
+    <script type="module" th:src="@{/scripts/pages/learnPage.js}"></script>
     <main>
         <nav>
             <a href="">learn</a>

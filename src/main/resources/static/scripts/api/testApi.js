@@ -1,0 +1,17 @@
+export async function fetchTest(nbTest, grade) {
+    try {
+        let response;
+        if (nbTest === "final")
+            response = await fetch(`/api/quizzes/final-test?grade=${grade}`);
+        else
+            response = await fetch(`/api/quizzes/unit-test?grade=${grade}&test=${nbTest}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching test :", error);
+        window.location.href = "/error";
+    }
+}

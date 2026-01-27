@@ -1,7 +1,7 @@
-async function fetchUserData() {
+export async function fetchUserData() {
     try {
         const response = await fetch("/api/user/profile");
-        userData = await response.json();
+        let userData = await response.json();
         if (response.ok) {
             return userData;
         } else {
@@ -12,7 +12,7 @@ async function fetchUserData() {
     }
 }
 
-async function updateUserData(updatedData) {
+export async function updateUserData(updatedData) {
     const url = `/api/user/update`;
     const options = {
         method: "PUT",

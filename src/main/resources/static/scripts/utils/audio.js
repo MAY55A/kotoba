@@ -1,8 +1,8 @@
 let currentAudio = null;
 
 // Plays the audio of the given source, and stops any already playing audio.
-export function playAudio(src) {
-    if (!src) return;
+export async function playAudio(src) {
+    if (!src) return null;
 
     if (currentAudio) {
         currentAudio.pause();
@@ -20,7 +20,10 @@ export function playAudio(src) {
         source.connect(gainNode).connect(ctx.destination);
     }
 
-    currentAudio.play().catch(() => {});
+    return new Promise(resolve => {
+        currentAudio.play();
+        currentAudio.addEventListener("ended", resolve, { once: true });
+    });
 }
 
 // Adds Click event listeners to all audio symbols in the current DOM,
