@@ -12,7 +12,7 @@ function displayAllKanji(kanjiList, user) {
     let kanjiLink;
     let status = "locked";
     let progress = user.learningStats.gradeProgress;
-    let currentGrade = user.learningStats.currentGrade;
+    let currentGrade = Number(user.learningStats.currentGrade);
     // Display Kanji elements
     while (kanjiUnit < kanjiList.length) {
         if(grade < currentGrade) {
@@ -40,8 +40,9 @@ function displayAllKanji(kanjiList, user) {
         }
     }
     content.insertAdjacentHTML('beforeend', `<span class="final-test ${status}">final test</span>`);
-    let progressRate = progress/totalUnits*100;
+    let progressRate = currentGrade === grade ? progress/totalUnits*100 : currentGrade < grade ? 0 : 100;
     progressBar.setAttribute("aria-valuenow", progressRate);
+    progressBar.setAttribute("title", `${progressRate}%`);
     progressBar.setAttribute("style", `width: ${progressRate}%;`);
 }
 
