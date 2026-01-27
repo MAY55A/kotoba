@@ -68,6 +68,35 @@ section:not(#answer) {
     }
 }
 
+#start {
+    background-color: white;
+
+    div {
+        background-color: var(--light-yellow);
+        padding: 2em;
+        border-radius: 10px;
+        width: clamp(150px, 70%, 600px);
+        border: var(--solid-pink-border);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+
+        button:hover {
+            box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    span {
+        font-size: clamp(2em, 4vw, 2.5em);
+        font-family: var(--navbar-font);
+    }
+
+    #start-btn {
+        background-color: var(--very-light-pink);
+        color: var(--red);
+        margin-top: 3em;
+    }
+}
+
 #answer input {
     width: auto;
     margin: 5em;

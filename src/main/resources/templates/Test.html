@@ -12,7 +12,14 @@
         <div id="loading" class="modal-overlay">
             <div>
                 <div class="spinner"></div>
-                <p>Loading, please wait...</p>
+                <p>Generating test, please wait...</p>
+            </div>
+        </div>
+        <div id="start" class="modal-overlay hidden">
+            <div>
+                <span th:text="'Grade ' + ${grade}"></span><br/>
+                <span th:text="'Test ' + ${test}"></span><br/>
+                <button id="start-btn">Start</button>
             </div>
         </div>
         <input type="hidden" id="grade" th:value="${grade}"/>

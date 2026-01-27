@@ -5,16 +5,14 @@ import {bindAudioSymbols, playAudio} from "../utils/audio.js";
 const grade = document.getElementById("grade").value;
 const nbTest = document.getElementById("test").value;
 const progressBar = document.getElementById("progress-bar");
+const startLayout = document.getElementById("start");
+const startBtn = document.getElementById("start-btn");
 const text = document.getElementById('text');
 const word = document.getElementById('word');
 const result = document.getElementById('question-result');
 const nextBtn = document.getElementById('next');
 const input = document.createElement("input");
-input.placeholder = "Enter your answer here";
-input.addEventListener("change", () => {
-    nextBtn.disabled = input.value.length === 0;
-})
-nextBtn.disabled = true;
+
 let test;
 let current = 0;
 let question;
@@ -23,6 +21,19 @@ let errors = 0;
 let correctAnswers = 0;
 let selected;
 let isNewTest;
+
+// A flag to control when to prevent navigation (only prevent refreshing, other navigations will be controlled manually)
+// Before and while fetching test data allow navigation (in case an error occurs and the user is redirected to /error)
+let preventNavigation = false;
+
+startBtn.addEventListener("click", () => {
+    playAudio("/sounds/start.mp3");
+    startLayout.classList.add("hidden");
+    displayCurrentQuestion();
+});
+input.addEventListener("change", () => {
+    nextBtn.disabled = input.value.length === 0;
+});
 nextBtn.addEventListener("click", () => {
     if (nextBtn.innerText === "check") {
         nextBtn.innerText = "continue";
@@ -56,32 +67,14 @@ nextBtn.addEventListener("click", () => {
         nextBtn.disabled = true;
         current++;
         updateProgressBar();
-        displayQuestion();
+        displayCurrentQuestion();
     }
 });
-async function fetchTest() {
-    try {
-        let response;
-        if (test === "final")
-            response = await fetch(`/api/quizzes/final-test?grade=${grade}`);
-        else
-            response = await fetch(`/api/quizzes/unit-test?grade=${grade}&test=${nbtest}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        let result = await response.json();
-        console.log(result);
-        document.getElementById('loading').classList.add("hidden");
-        playAudio("/sounds/start.mp3");
-        return result;
-    } catch (error) {
-        console.error("Error fetching test :", error);
-        window.location.href = "/error";
-    }
-}
 
+input.placeholder = "Enter your answer here";
+nextBtn.disabled = true;
 
-function displayQuestion() {
+function displayCurrentQuestion() {
     if(current === test.questions.length)
         showTestResult();
     else {
@@ -191,6 +184,7 @@ function showTestResult() {
     }
     testResult.innerHTML = resultContent;
     testResultModal.classList.remove("hidden");
+    preventNavigation = false;
 }
 
 function showGoodResult(points) {
@@ -213,6 +207,11 @@ function updateProgressBar() {
 
 }
 
+function displayStartBtn() {
+    document.getElementById('loading').classList.add("hidden");
+    startLayout.classList.remove("hidden");
+}
+
 function displayExitPopup(bool) {
     playAudio("/sounds/pop.mp3");
     let exitPopup = document.getElementById("confirmation-modal");
@@ -223,10 +222,18 @@ function displayExitPopup(bool) {
 }
 
 function exitTest() {
+    preventNavigation = false;
     window.location.href = `/learn/grades/${grade}`;
 }
 
-fetchTest().then((testData) => {
+// Show popup dialog before refreshing or closing tab
+window.addEventListener("beforeunload", (event) => {
+    if (preventNavigation) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+
 document.getElementById("x").addEventListener("click", ()=>displayExitPopup(true));
 document.getElementById("exit").addEventListener("click", exitTest);
 document.getElementById("cancel").addEventListener("click", ()=>displayExitPopup(false));
@@ -234,5 +241,9 @@ document.getElementById("cancel").addEventListener("click", ()=>displayExitPopup
 
 fetchTest(nbTest, grade).then((testData) => {
     test = testData;
-    displayQuestion(0);
+
+    // Now that the test data is fetched prevent navigation (redirecting to /error is not a problem anymore)
+    preventNavigation = true;
+
+    displayStartBtn();
 });
