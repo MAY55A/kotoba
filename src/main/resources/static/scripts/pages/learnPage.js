@@ -1,5 +1,5 @@
 import {fetchUserData} from "../api/userApi.js";
-import {loadNavBar} from "../ui/navbar.js";
+import {loadAuthNav} from "../ui/authNav.js";
 import {loadStats} from "../render/displayStats.js";
 import {loadAchievements} from "../render/displayAchievements.js";
 
@@ -39,7 +39,7 @@ function loadGrades(userData) {
 }
 
 fetchUserData().then((user) => {
-    loadNavBar(user);
+    loadAuthNav(user);
     loadGrades(user);
     loadStats(user.learningStats);
     loadAchievements(user.learningStats);

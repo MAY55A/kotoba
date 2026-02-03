@@ -1,6 +1,5 @@
 import {fetchRandomKanji, searchKanji} from "../api/kanjiApi.js";
-import {loadNavBar} from "../ui/navbar.js";
-import {fetchUserData} from "../api/userApi.js";
+import {loadAuthNav} from "../ui/authNav.js";
 
 export async function search() {
     const word = document.getElementById("search-input").value.trim();
@@ -34,9 +33,7 @@ export async function getRandom() {
     }
 }
 
-fetchUserData().then((user) => {
-    loadNavBar(user).then(()=> getRandom());
-});
+loadAuthNav().then(() => getRandom());
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("search-btn").addEventListener("click", search);
 });
