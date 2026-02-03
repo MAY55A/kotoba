@@ -1,5 +1,6 @@
 @import url("shared.css");
 
+/* Top bar */
 header {
     position: fixed;
     top: 0;
@@ -72,4 +73,41 @@ ul {
 
 main {
     margin-top: 5em;
+}
+
+/* sidebar */
+nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: calc(100vh - 7em);
+    margin: 1em;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color: var(--whitesh-yellow);
+    width: 7em;
+    border: 1px solid var(--saturated-yellow);
+    border-radius: 1em;
+    box-shadow: 5px 5px 10px 5px hsla(217, 19%, 35%, 0.1);
+
+    a {
+        height: 100%;
+        margin: 2em 0.5em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1em;
+        transition: 200ms ease-in-out all;
+
+        &:hover, &.active {
+            background-color: var(--light-yellow);
+        }
+
+        img {
+            max-height: 60px;
+            max-width: 60px;
+        }
+    }
 }

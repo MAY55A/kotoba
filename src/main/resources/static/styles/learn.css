@@ -9,18 +9,6 @@ section {
     padding: 2em 0 5em 7em;
 }
 
-nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    background-color: var(--whitesh-yellow);
-    width: 7em;
-    text-align: center;
-}
-
 h1 {
     font-size: clamp(1.3em, 4vw, 1.7em);
     width: clamp(5em, 70%, 20em);
