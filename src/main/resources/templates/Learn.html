@@ -8,26 +8,10 @@
     <title>KOTOBA | LEARN</title>
 </head>
 <body>
-    <header>
-        <a class="logo" href="/">
-            <span>言葉</span>
-            <span>KOTOBA</span>
-        </a>
-        <ul class="nav-items">
-            <li><a href="/learn">Start Learning</a></li>
-            <li><a href="/">Start a quiz</a></li>
-        </ul>
-        <div id="account">
-        </div>
-    </header>
+<header th:replace="fragments/navbar"></header>
     <script type="module" th:src="@{/scripts/pages/learnPage.js}"></script>
     <main>
-        <nav>
-            <a href="">learn</a>
-            <a href="">practice</a>
-            <a href="">characters</a>
-            <a href="">favorites</a>
-        </nav>
+        <nav th:replace="fragments/sidebar :: sidebar(${currentPath})"></nav>
         <section>
             <h1>Continue your learning path and unlock all the grades</h1>
             <div class="grades">
@@ -100,7 +84,6 @@
                     <h2>Achievements</h2>
                     <div class="badges" id="achievements"></div>
                 </div>
-
             </div>
         </section>
     </main>

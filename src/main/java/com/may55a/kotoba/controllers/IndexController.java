@@ -24,7 +24,8 @@ public class IndexController {
     }
 
     @GetMapping("/learn")
-    public String learn() {
+    public String learn(Model model) {
+        model.addAttribute("currentPath", "/learn");
         return "Learn";
     }
 
@@ -46,5 +47,17 @@ public class IndexController {
         model.addAttribute("grade", grade);
         model.addAttribute("test", test);
         return "Test";
+    }
+
+    @GetMapping("/practice")
+    public String practice(Model model) {
+        model.addAttribute("currentPath", "/practice");
+        return "Practice";
+    }
+
+    @GetMapping("/favourites")
+    public String favourites(Model model) {
+        model.addAttribute("currentPath", "/favourites");
+        return "Favourites";
     }
 }
