@@ -1,9 +1,10 @@
 import {fetchTest} from "../api/testApi.js";
-import {fetchUserData, updateUserData} from "../api/userApi.js";
+import {fetchLearningStats, updateUserData} from "../api/userApi.js";
 import {bindAudioSymbols, playAudio} from "../utils/audio.js";
 
 const grade = document.getElementById("grade").value;
 const nbTest = document.getElementById("test").value;
+const loading = document.getElementById('loading');
 const progressBar = document.getElementById("progress-bar");
 const startLayout = document.getElementById("start");
 const startBtn = document.getElementById("start-btn");
@@ -129,14 +130,25 @@ function displayCurrentQuestion() {
     }
 }
 
-function showTestResult() {
+async function showTestResult() {
     let testResult = document.getElementById('test-result');
     let testResultModal = document.getElementById('test-result-modal');
     let resultContent;
-    if(totalPoints < test.requiredScore) { // Test failed
+    let audio;
+
+    loading.getElementsByTagName("p")[0].textContent = "Loading results, please wait..."
+    loading.classList.remove("hidden");
+
+    let learningStats = await fetchLearningStats();
+    learningStats.xp += totalPoints;
+    learningStats.errors += errors;
+    learningStats.correctAnswers += correctAnswers;
+
+
+    if (totalPoints < test.requiredScore) { // Test failed
         testResult.classList.add("failed");
-        playAudio("/sounds/lose.mp3");
-        resultContent  = `
+        audio = "/sounds/lose.mp3";
+        resultContent = `
             <h2>Sorry ! You did not pass </h2>
             <p>Your score: <span>${totalPoints}</span></p>
             <p>Minimum required score: <span>${test.requiredScore}</span></p>
@@ -144,28 +156,21 @@ function showTestResult() {
             <a href="/learn/grades/${grade}">Close</a>
         `;
     } else { // Test passed
-        fetchUserData().then((user) => {
-            user.learningStats.xp += totalPoints;
-            user.learningStats.errors += errors;
-            user.learningStats.correctAnswers += correctAnswers;
-
-            isNewTest = user.learningStats.currentGrade == grade &&
-                (nbTest == "final" || user.learningStats.gradeProgress == nbTest*10);
-            if(isNewTest) {
-                user.learningStats.testsPassed++;
-                user.learningStats.gradeProgress++;
-                if(nbTest === "final" && grade != 6) { // if it's the final test of a grade (not the last grade)
-                    user.learningStats.currentGrade++;
-                    user.learningStats.gradeProgress = 0;
-                }
+        isNewTest = learningStats.currentGrade == grade &&
+            (nbTest == "final" || learningStats.gradeProgress == nbTest * 10);
+        if (isNewTest) {
+            learningStats.testsPassed++;
+            learningStats.gradeProgress++;
+            if (nbTest === "final" && grade != 6) { // if it's the final test of a grade (not the last grade)
+                learningStats.currentGrade++;
+                learningStats.gradeProgress = 0;
             }
+        }
 
-            updateUserData(user);
-        });
         testResult.classList.add("passed");
-        playAudio("/sounds/win.wav");
+        audio = "/sounds/win.wav";
         let msg = "";
-        if(isNewTest) {
+        if (isNewTest) {
             if (test === "final")
                 if (grade === "6")
                     msg = "Congratulations, You completed all the grades !";
@@ -174,7 +179,7 @@ function showTestResult() {
             else
                 msg = "Now you can continue your learning path !";
         }
-        resultContent  = `
+        resultContent = `
             <h2>Great Job ! You passed this test </h2>
             <p>XP earned: <span>${totalPoints}</span></p>
             <p>${msg}</p>
@@ -182,6 +187,10 @@ function showTestResult() {
             <a href="/learn/grades/${grade}">Close</a>
         `;
     }
+
+    await updateUserData({"learningStats": learningStats});
+    playAudio(audio);
+    loading.classList.add("hidden");
     testResult.innerHTML = resultContent;
     testResultModal.classList.remove("hidden");
     preventNavigation = false;
@@ -208,7 +217,7 @@ function updateProgressBar() {
 }
 
 function displayStartBtn() {
-    document.getElementById('loading').classList.add("hidden");
+    loading.classList.add("hidden");
     startLayout.classList.remove("hidden");
 }
 
