@@ -6,7 +6,7 @@ function displayAllKanji(kanjiList, user) {
     console.log(user);
     const grade = Number(document.getElementById("grade").innerHTML);
     const progressBar = document.getElementById("progress-bar");
-    const content = document.getElementById("grade-content");
+    const content = document.getElementById("kanji-list");
     let kanjiUnit = 0;
     let totalUnits = 0;
     let kanjiLink;

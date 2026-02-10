@@ -1,4 +1,4 @@
-@import url("navbar.css");
+@import url("nav.css");
 
 section {
     height: 100%;
@@ -10,14 +10,7 @@ section {
 }
 
 h1 {
-    font-size: clamp(1.3em, 4vw, 1.7em);
     width: clamp(5em, 70%, 20em);
-    text-align: center;
-    margin-bottom: 1em;
-}
-h2 {
-    color: var(--grey);
-    font-size: 1em;
 }
 
 .progress {
