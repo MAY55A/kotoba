@@ -12,6 +12,20 @@ export async function fetchUserData() {
     }
 }
 
+export async function fetchLearningStats() {
+    try {
+        const response = await fetch("/api/user/learningStats");
+        let data = await response.json();
+        if (response.ok) {
+            return data;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        return null;
+    }
+}
+
 export async function updateUserData(updatedData) {
     const url = `/api/user/update`;
     const options = {

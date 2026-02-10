@@ -1,6 +1,7 @@
 package com.may55a.kotoba.controllers;
 
 import com.may55a.kotoba.dto.UserUpdateDTO;
+import com.may55a.kotoba.models.LearningStats;
 import com.may55a.kotoba.models.User;
 import com.may55a.kotoba.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<User> getUserProfile() {
         return ResponseEntity.ok(userService.getLoggedInUser());
+    }
+
+    @GetMapping("/learningStats")
+    public ResponseEntity<LearningStats> getLearningStats() {
+        return ResponseEntity.ok(userService.getLearningStats());
     }
 
     @PatchMapping("/update")

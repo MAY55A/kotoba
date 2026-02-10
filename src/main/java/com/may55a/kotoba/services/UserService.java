@@ -54,11 +54,18 @@ public class UserService {
             } else {
                 throw new RuntimeException("Unknown UserDetails type: " + authentication.getPrincipal().getClass());
             }
-        return userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseGet(() -> {
                     OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
                     return customOAuth2UserService.createUser(oAuth2User);
                 });
+
+        return user;
+    }
+
+    public LearningStats getLearningStats() {
+        User user = getLoggedInUser();
+        return user.getLearningStats();
     }
 
     public void updateUser(UserUpdateDTO updatedData) {
