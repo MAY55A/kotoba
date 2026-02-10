@@ -1,5 +1,6 @@
 package com.may55a.kotoba.controllers;
 
+import com.may55a.kotoba.dto.UserUpdateDTO;
 import com.may55a.kotoba.models.User;
 import com.may55a.kotoba.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getLoggedInUser());
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateUser(@RequestBody User updatedUser) {
+    @PatchMapping("/update")
+    public ResponseEntity<String> updateUser(@RequestBody UserUpdateDTO data) {
         try {
-            userService.updateUser(updatedUser);
+            userService.updateUser(data);
             return ResponseEntity.ok("User updated successfully");
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());

@@ -1,5 +1,6 @@
 package com.may55a.kotoba.services;
 
+import com.may55a.kotoba.dto.UserUpdateDTO;
 import com.may55a.kotoba.models.*;
 import com.may55a.kotoba.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,14 +60,25 @@ public class UserService {
                     return customOAuth2UserService.createUser(oAuth2User);
                 });
     }
-    public void updateUser(User updatedUser) {
-        User existingUser = userRepository.findByEmail(updatedUser.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setDescription(updatedUser.getDescription());
-        existingUser.setProfilePicture(updatedUser.getProfilePicture());
-        existingUser.setLearningStats(updatedUser.getLearningStats());
+    public void updateUser(UserUpdateDTO updatedData) {
+        User existingUser = getLoggedInUser();
+
+        if (updatedData.getUsername() != null)
+            existingUser.setUsername(updatedData.getUsername());
+
+        if (updatedData.getDescription() != null)
+            existingUser.setDescription(updatedData.getDescription());
+
+        if (updatedData.getProfilePicture() != null)
+            existingUser.setProfilePicture(updatedData.getProfilePicture());
+
+        if (updatedData.getLearningStats() != null)
+            existingUser.setLearningStats(updatedData.getLearningStats());
+
+        if (updatedData.getFavourites() != null)
+            existingUser.setFavourites(updatedData.getFavourites());
+
         userRepository.save(existingUser);
     }
 

@@ -15,7 +15,7 @@ export async function fetchUserData() {
 export async function updateUserData(updatedData) {
     const url = `/api/user/update`;
     const options = {
-        method: "PUT",
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json",
         },
