@@ -60,4 +60,10 @@ public class IndexController {
         model.addAttribute("currentPath", "/favourites");
         return "Favourites";
     }
+
+    @GetMapping("/favourites/{kanji}")
+    public String learnKanji(@PathVariable String kanji, Model model) {
+        model.addAttribute("kanji", kanji);
+        return "Kanji";
+    }
 }

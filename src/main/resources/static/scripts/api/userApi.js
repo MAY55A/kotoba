@@ -26,6 +26,20 @@ export async function fetchLearningStats() {
     }
 }
 
+export async function fetchFavourites() {
+    try {
+        const response = await fetch("/api/user/favourites");
+        let data = await response.json();
+        if (response.ok) {
+            return data;
+        } else {
+            return [];
+        }
+    } catch (error) {
+        return [];
+    }
+}
+
 export async function updateUserData(updatedData) {
     const url = `/api/user/update`;
     const options = {

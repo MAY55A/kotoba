@@ -5,11 +5,16 @@ import com.may55a.kotoba.models.*;
 import com.may55a.kotoba.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 @Service
 public class UserService {
@@ -66,6 +71,12 @@ public class UserService {
     public LearningStats getLearningStats() {
         User user = getLoggedInUser();
         return user.getLearningStats();
+    }
+
+    public List<String> getFavourites() {
+        User user = getLoggedInUser();
+        String favourites = user.getFavourites();
+        return favourites.isEmpty() ? new ArrayList<>() : Arrays.stream(user.getFavourites().split(", ")).toList();
     }
 
     public void updateUser(UserUpdateDTO updatedData) {

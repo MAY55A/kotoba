@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -28,6 +30,11 @@ public class UserController {
     @GetMapping("/learningStats")
     public ResponseEntity<LearningStats> getLearningStats() {
         return ResponseEntity.ok(userService.getLearningStats());
+    }
+
+    @GetMapping("/favourites")
+    public ResponseEntity<List<String>> getFavourites() {
+        return ResponseEntity.ok(userService.getFavourites());
     }
 
     @PatchMapping("/update")

@@ -1,16 +1,13 @@
-import {fetchKanjiData} from "../api/kanjiApi.js";
-import {fetchUserData, updateUserData} from "../api/userApi.js";
-import {bindAudioSymbols, playAudio} from "../utils/audio.js";
+import {fetchFavourites, updateUserData} from "../api/userApi.js";
+import {bindAudioSymbols} from "../utils/audio.js";
 
-const kanji = document.getElementById("kanji").innerHTML;
-const id = Number(document.getElementById("kanji-id").value);
-let nextUnit;
-let previousUnit;
+export async function displayKanjiData(data) {
+    const heart = document.getElementById("heart");
+    let favourites;
 
-function displayKanjiData(data) {
     document.getElementById('loading').classList.add("hidden");
     let examples = "";
-    for(let ex of data.examples.slice(0,3)) {
+    for (let ex of data.examples.slice(0, 3)) {
         examples += `<div>
                       <span class="audio-symbol" data-audio="${ex.audio}">🔊</span>
                       ${ex.japanese}<br>${ex.meaning}
@@ -27,67 +24,20 @@ function displayKanjiData(data) {
 
     bindAudioSymbols(); // enables playing audio when clicking on any audio-symbol inside the current DOM
 
-    let nextBtn = document.getElementById('next');
-    let previousBtn = document.getElementById('previous');
-    let link;
-
-    if(previousUnit.kanji != "null") {
-        previousBtn.classList.remove("hidden");
-        if(previousUnit.isTest !== 0) {
-            link = `/learn/grades/${data.grade}/tests/${previousUnit.isTest}`;
-            previousBtn.innerText = "TEST";
-            nextBtn.classList.add("test");
-        } else {
-            link = `/learn/grades/${data.grade}/${previousUnit.kanji}`;
-        }
-        previousBtn.addEventListener("click", async function () {
-            await playAudio("/sounds/next.mp3");
-            window.location.href = link;
-        });
+    // check if the kanji is a favourite or not
+    favourites = await fetchFavourites();
+    if (favourites.includes(data.kanji)) {
+        heart.classList.add("active");
     }
-    if(nextUnit.kanji == "null") {
-        link = `/learn/grades/${data.grade}/tests/final`;
-        nextBtn.innerText = "FINAL TEST";
-        nextBtn.classList.add("test");
-    } else {
-        if(nextUnit.isTest !== 0) {
-            link = `/learn/grades/${data.grade}/tests/${nextUnit.isTest}`;
-            nextBtn.innerText = "TEST";
-            nextBtn.classList.add("test");
-        } else {
-            link = `/learn/grades/${data.grade}/kanji?kanji=${nextUnit.kanji}&id=${id + 1}`;
-        }
-    }
-    nextBtn.addEventListener("click", async function () {
-        await Promise.all([
-            playAudio("/sounds/next.mp3"),
-            addXP(data)
-        ]);
 
-        window.location.href = link;
-    });
-}
+    heart.addEventListener("click", toggleFavourite);
 
-async function addXP(data) {
-    const user = await fetchUserData();
-
-    const isNewKanji =
-        user.learningStats.currentGrade === data.grade &&
-        user.learningStats.gradeProgress === id + Math.trunc(id / 10);
-
-    if (isNewKanji) {
-        user.learningStats.xp += 5;
-        user.learningStats.totalLearnedKanji += 1;
-        user.learningStats.gradeProgress++;
-        console.log(user);
-        await updateUserData(user);
+    function toggleFavourite() {
+        let isAddedToFavourites = heart.classList.toggle("active");
+        isAddedToFavourites ? favourites.push(data.kanji) : favourites.splice(favourites.indexOf(data.kanji), 1);
+        updateUserData({"favourites": favourites.join(", ")});
     }
 }
 
-fetchKanjiData(kanji).then((data) =>
-{
-    nextUnit = data.nextUnit
-    previousUnit = data.previousUnit
-    displayKanjiData(data.kanjiData)
-}
-);
+
+

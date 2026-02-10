@@ -17,13 +17,14 @@
                 <p>Loading, please wait...</p>
             </div>
         </div>
-        <a class="go-back" th:href="@{'/learn/grades/' + ${grade}}" title="go back">⬅</a>
+        <a class="go-back" th:if="${grade == null}" th:href="@{'/favourites'}" title="go back">⬅</a>
+        <a class="go-back" th:unless="${grade == null}" th:href="@{'/learn/grades/' + ${grade}}" title="go back">⬅</a>
         <header>
             <h1><span id="kanji-audio" class="audio-symbol">🔊</span><span th:text="${kanji}" id="kanji"></span></h1>
             <input th:value="${id}" type="hidden" id="kanji-id">
             <div id="meaning"></div>
             <div id="readings"></div>
-            <span class="heart" onclick="updateFavorites(${kanji})">&hearts;</span>
+            <span id="heart" class="heart">&hearts;</span>
         </header>
         <section id="kanji-info">
             <div>
@@ -41,9 +42,10 @@
             <video id="kanji-video" controls>
                 <source src="" type="video/mp4">
             </video>
-            <script type="module" th:src="@{/scripts/render/displayKanji.js}"></script>
+            <script type="module" th:if="${grade == null}" th:src="@{/scripts/pages/favouriteKanjiPage.js}"></script>
+            <script type="module" th:unless="${grade == null}" th:src="@{/scripts/pages/gradeKanjiPage.js}"></script>
         </section>
-        <footer>
+        <footer th:if="${grade != null}">
             <button id="previous" class="hidden">previous</button>
             <button id="next">next</button>
         </footer>
