@@ -5,6 +5,7 @@ import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,8 +39,11 @@ public class User implements Serializable {
     @Column
     private String description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String favourites = "";
+
+    @Column(columnDefinition = "TIMESTAMPTZ")
+    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
