@@ -55,7 +55,7 @@
                         },
                         body: JSON.stringify(userData)
                     });
-                    text = await response.text();
+                    let text = await response.text();
                     if(text.length > 50)
                         message.innerText = "An error occurred";
                     else
