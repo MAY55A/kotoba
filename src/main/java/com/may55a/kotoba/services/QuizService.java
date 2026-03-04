@@ -6,16 +6,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Stream;
 
 @Service
 public class QuizService {
     private final KanjiService kanjiService;
+    private final UserService userService;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
 
     @Autowired
-    public QuizService(KanjiService kanjiService){
+    public QuizService(KanjiService kanjiService, UserService userService) {
         this.kanjiService= kanjiService;
+        this.userService = userService;
     }
 
     public Quiz getUnitTest(String grade, int nbTest) {
@@ -26,10 +27,35 @@ public class QuizService {
     }
 
     public Quiz getFinalTest(String grade) {
+        return getEntireGradeTest(grade, 40);
+    }
+
+    public Quiz getEntireGradeTest(String grade, int nbQuestions) {
         List<String> list = getListKanji(grade, 0, -1);
         if(list.isEmpty())
             return null;
-        return generateTest(list, 20, 60);
+        return generateTest(list, nbQuestions, 80);
+    }
+
+    public Quiz getPracticeTest(String type, int nbQuestions, String grade) {
+        if (type.equals("grade")) {
+            return getEntireGradeTest(grade, nbQuestions);
+        }
+        if (type.equals("favourites")) {
+            List<String> list = userService.getFavourites();
+            return generateTest(list, nbQuestions, 0);
+        }
+        if (type.equals("all")) {
+            LearningStats stats = userService.getLearningStats();
+            int currentGrade = stats.getCurrentGrade();
+            List<String> list = new ArrayList<>();
+            for (int i = 1; i < currentGrade; i++) {
+                list.addAll(getListKanji(String.valueOf(i), 0, -1));
+            }
+            list.addAll(getListKanji(String.valueOf(currentGrade), 0, stats.getGradeProgress()));
+            return generateTest(list, nbQuestions, 0);
+        }
+        return null;
     }
 
     public Quiz generateTest(List<String> kanjiList, int nbQuestions, int passingPercentage) {
@@ -109,7 +135,7 @@ public class QuizService {
         }
 
         // pick the first kanji from the list to be the main kanji for this question (test subject)
-        KanjiDetails kanji = kanjiList.get(0);
+        KanjiDetails kanji = kanjiList.get(random.nextInt(kanjiList.size()));
         if (kanji == null)
             return null;
         if(type == QuestionType.SHOW_KANJI)

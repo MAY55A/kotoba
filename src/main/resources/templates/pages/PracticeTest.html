@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/kanji_test.css}">
+    <title>Kotoba | Practice</title>
+</head>
+<body>
+<main>
+    <div id="loading" class="modal-overlay">
+        <div>
+            <div class="spinner"></div>
+            <p>Generating test, please wait...</p>
+        </div>
+    </div>
+    <div id="start" class="modal-overlay hidden">
+        <div>
+            <span>Practice</span><br/>
+            <th:block th:switch="${practiceType}">
+                <span th:case="'grade'" th:text="'Grade ' + ${grade}"></span>
+                <span th:case="'favourites'">Favourites</span>
+                <span th:case="'all'">All unlocked kanji</span>
+            </th:block>
+            <br/>
+            <button id="start-btn">Start</button>
+        </div>
+    </div>
+    <input type="hidden" id="type" th:value="${practiceType}"/>
+    <input type="hidden" id="questions-count" th:value="${questions}"/>
+    <input th:if="${practiceType} == 'grade'" type="hidden" id="grade" th:value="${grade}"/>
+    <a class="go-back" id="x" title="exit">x</a>
+    <div id="confirmation-modal" class="modal-overlay hidden">
+        <div id="confirmation">
+            <p>If you exit the test now you will lose your progress !</p>
+            <button id="exit">exit</button>
+            <button id="cancel">cancel</button>
+        </div>
+    </div>
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar"
+             aria-valuemin="0" aria-valuemax="100" id="progress-bar"></div>
+    </div>
+    <header>
+        <p id="text"></p>
+        <h1 id="word"></h1>
+    </header>
+    <div id="test-content">
+        <section>
+        </section>
+        <div id="question-result"></div>
+    </div>
+    <div id="test-result-modal" class="modal-overlay hidden">
+        <div id="test-result">
+        </div>
+    </div>
+    <footer>
+        <button id="next" class="check">check</button>
+    </footer>
+    <script type="module" th:src="@{/scripts/pages/practiceTestPage.js}"></script>
+</main>
+</body>
+</html>

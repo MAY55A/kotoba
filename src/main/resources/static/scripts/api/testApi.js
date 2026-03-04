@@ -1,4 +1,4 @@
-export async function fetchTest(nbTest, grade) {
+export async function fetchGradeTest(nbTest, grade) {
     try {
         let response;
         if (nbTest === "final")
@@ -13,5 +13,19 @@ export async function fetchTest(nbTest, grade) {
     } catch (error) {
         console.error("Error fetching test :", error);
         window.location.href = "/error";
+    }
+}
+
+export async function fetchPracticeTest(type, nbQuestions, grade) {
+    try {
+        let response = await fetch(`/api/quizzes/practice-test?type=${type}&questions=${nbQuestions}&grade=${grade}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching test :", error);
+        //window.location.href = "/error";
     }
 }
