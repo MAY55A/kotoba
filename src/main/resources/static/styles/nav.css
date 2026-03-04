@@ -85,7 +85,7 @@ nav {
     position: fixed;
     left: 0;
     bottom: 0;
-    background-color: var(--whitesh-yellow);
+    background-color: var(--very-light-yellow);
     width: 7em;
     border: 1px solid var(--saturated-yellow);
     border-radius: 1em;

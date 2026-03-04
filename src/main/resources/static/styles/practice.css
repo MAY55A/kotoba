@@ -1,0 +1,183 @@
+@import url("nav.css");
+
+section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em 0 5em 7em;
+}
+
+#loading {
+    padding: 10em;
+}
+
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    background-color: transparent;
+    border: none;
+}
+
+.sub-container {
+    width: 100%;
+    padding: 2em;
+    background-color: var(--whitesh-yellow);
+    border: var(--dashed-pink-border);
+    border-radius: 10px;
+
+    a {
+        display: inline-flex;
+        align-items: end;
+        justify-content: center;
+        gap: 6px;
+        color: var(--pink);
+
+        .arrow {
+            line-height: 23px;
+            font-size: 80%;
+        }
+    }
+
+    a span:first-child:hover {
+        text-decoration: underline;
+    }
+}
+
+#practice-all, #practice-favourites {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1em;
+
+    button {
+        background-color: var(--yellow);
+        color: var(--pink);
+        height: 2.5em;
+
+        &:not(.disabled):hover {
+            background-color: var(--light-yellow);
+        }
+
+        &.disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+
+}
+
+.grades {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: center;
+    padding: 2em;
+
+    .grade {
+        position: relative;
+        width: 35%;
+        min-width: 15em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 10px 15px 0 hsla(0, 0%, 0%, 0.1);
+        text-align: center;
+        border-radius: 15px;
+        padding: 1em;
+        border: var(--dashed-pink-border);
+        color: var(--grey);
+
+        .lock {
+            position: absolute;
+            top: 7px;
+            right: 10px;
+            font-size: inherit;
+        }
+
+        h3 {
+            font-size: clamp(1em, 10vw, 1.2em);
+            color: var(--grey);
+        }
+
+        &.unlocked {
+            background-color: var(--whitesh-pink);
+
+            .lock {
+                display: none;
+            }
+        }
+
+        &.locked {
+            background-color: white;
+            border-color: var(--light-grey);
+
+            a {
+                color: var(--light-pink);
+            }
+        }
+
+        button {
+            background-color: var(--very-light-pink);
+            color: var(--pink);
+            height: 2em;
+            border: var(--solid-pink-border);
+            box-shadow: 0 10px 15px 0 hsla(0, 0%, 0%, 0.1);
+
+            &:hover {
+                background-color: var(--yellow);
+            }
+        }
+    }
+
+    .grade:hover {
+        transform: scale(1.1);
+        transition: 200ms ease-in-out all;
+    }
+}
+
+#options {
+    justify-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1em;
+    gap: 1em;
+
+    .option-card {
+        width: clamp(100px, 30vw, 200px);
+        margin: 0;
+    }
+
+    .option-card:hover {
+        box-shadow: 0 0 10px 5px #00000052;
+        cursor: pointer;
+    }
+
+    .option-card:has(input:checked) {
+        background-color: var(--yellow);
+    }
+
+    .option-card:has(input:disabled) {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    input {
+        display: none;
+    }
+}
+
+#confirm-btn {
+    background-color: var(--very-light-pink);
+    color: var(--red);
+
+    &:hover {
+        background-color: var(--light-pink);
+    }
+}

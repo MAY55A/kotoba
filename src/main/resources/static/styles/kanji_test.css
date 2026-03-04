@@ -54,18 +54,6 @@ section:not(#answer) {
             opacity: 0.5;
         }
     }
-    > div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: clamp(100px,30vw,300px);
-        padding: 1em;
-        background-color: var(--whitesh-yellow);
-        border: var(--dashed-pink-border);
-        box-shadow: 0 10px 15px 0 hsla(0, 0%, 0%, 0.2);
-        border-radius: 10px;
-        text-align: center;
-    }
 }
 
 #start {
@@ -283,31 +271,6 @@ footer {
         h2 {
             color: var(--pink);
         }
-    }
-}
-
-
-
-#confirmation {
-    background-color: white;
-    padding: 1em;
-    border-radius: 10px;
-    width: clamp(150px, 70%, 600px);
-    border: var(--dashed-pink-border);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    z-index: 1000;
-    * {
-        margin: 1em;
-    }
-
-    button:hover {
-        box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.2);
-    }
-
-    #exit {
-        background-color: var(--red);
-        color: var(--whitesh-pink);
     }
 }
 

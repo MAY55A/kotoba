@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/practice.css}">
+    <title>KOTOBA | Practice</title>
+</head>
+<body>
+<header th:replace="fragments/navbar"></header>
+<script type="module" th:src="@{/scripts/pages/practicePage.js}"></script>
+<main>
+    <nav th:replace="fragments/sidebar :: sidebar(${currentPath})"></nav>
+    <section>
+        <h1>Practice</h1>
+        <h2 class="subtitle">You can practice here what you've learned before.</h2>
+        <div id="loading">
+            <div>
+                <div class="spinner"></div>
+                <p>Loading, please wait...</p>
+            </div>
+        </div>
+
+        <div class="main-container container hidden">
+            <div class="sub-container">
+                <div id="practice-all">
+                    <h2>Practice all that you've learned so far : <span id="total-kanji-learned"></span></h2>
+                    <button id="practice-all-btn">Practice</button>
+                </div>
+            </div>
+
+            <div class="sub-container">
+                <h2>Practice by grade :</h2>
+                <div class="grades">
+                    <div class="grade" data-grade="1">
+                        <span th:replace="/fragments/icons/lock"></span>
+                        <h3>Grade 1</h3>
+                    </div>
+                    <div class="grade" data-grade="2">
+                        <span th:replace="/fragments/icons/lock"></span>
+                        <h3>Grade 2</h3>
+                    </div>
+                    <div class="grade" data-grade="3">
+                        <span th:replace="/fragments/icons/lock"></span>
+                        <h3>Grade 3</h3>
+                    </div>
+                    <div class="grade" data-grade="4">
+                        <span th:replace="/fragments/icons/lock"></span>
+                        <h3>Grade 4</h3>
+                    </div>
+                    <div class="grade" data-grade="5">
+                        <span th:replace="/fragments/icons/lock"></span>
+                        <h3>Grade 5</h3>
+                    </div>
+                    <div class="grade" data-grade="6">
+                        <span th:replace="/fragments/icons/lock"></span>
+                        <h3>Grade 6</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-container">
+                <div id="practice-favourites">
+                    <h2>Practice your favourites : <span id="total-favourites"></span></h2>
+                    <button id="practice-favourites-btn">Practice</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="test-params-modal" class="modal-overlay hidden">
+            <div class="popup-modal">
+                <h3>Choose the desired length of the test</h3>
+                <div id="options">
+                    <label class="option-card">
+                        <input type="radio" name="questionCount" value="10" checked>
+                        10 questions
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="questionCount" value="20">
+                        20 questions
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="questionCount" value="30">
+                        30 questions
+                    </label>
+
+                    <label class="option-card">
+                        <input type="radio" name="questionCount" value="40">
+                        40 questions
+                    </label>
+                </div>
+                <button id="cancel-btn">Cancel</button>
+                <button id="confirm-btn">Confirm</button>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

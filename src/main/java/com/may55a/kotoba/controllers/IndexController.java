@@ -55,6 +55,28 @@ public class IndexController {
         return "pages/Practice";
     }
 
+    @GetMapping("/practice/grades/{grade}")
+    public String practiceByGrade(@PathVariable String grade, @RequestParam int questions, Model model) {
+        model.addAttribute("practiceType", "grade");
+        model.addAttribute("grade", grade);
+        model.addAttribute("questions", questions);
+        return "pages/PracticeTest";
+    }
+
+    @GetMapping("/practice/favourites")
+    public String practiceFavourites(@RequestParam int questions, Model model) {
+        model.addAttribute("practiceType", "favourites");
+        model.addAttribute("questions", questions);
+        return "pages/PracticeTest";
+    }
+
+    @GetMapping("/practice/all")
+    public String practiceAll(@RequestParam int questions, Model model) {
+        model.addAttribute("practiceType", "all");
+        model.addAttribute("questions", questions);
+        return "pages/PracticeTest";
+    }
+
     @GetMapping("/favourites")
     public String favourites(Model model) {
         model.addAttribute("currentPath", "/favourites");
