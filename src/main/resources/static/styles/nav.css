@@ -11,7 +11,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--navbar-font);
+    font-family: var(--title-font);
     z-index: 1000;
     a {
         color: var(--pink);
@@ -37,7 +37,7 @@ ul {
 }
 
 .logo {
-    font-family: var(--navbar-font);
+    font-family: var(--title-font);
     font-size: var(--logo-font-size);
     display: flex;
     flex-direction: column;

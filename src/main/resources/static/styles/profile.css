@@ -1,0 +1,64 @@
+@import url("nav.css");
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em;
+}
+
+.user-banner {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--light-yellow);
+    padding: 2em;
+    border-radius: 20px;
+    border: 2px solid var(--saturated-yellow);
+    box-shadow: 5px 5px 10px 5px hsla(217, 19%, 35%, 0.1);
+
+    #user-info {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+
+        #profile-picture {
+            width: clamp(100px, 20vw, 200px);
+            border-radius: 75px;
+            border: 2px solid var(--saturated-yellow);
+            box-shadow: 5px 5px 10px 5px hsla(217, 19%, 35%, 0.1);
+
+        }
+
+        #username {
+            font-size: clamp(1.2rem, 3vw, 2.4rem);
+            font-family: var(--title-font);
+        }
+
+        #description {
+            margin: 1em 0 2em 1em;
+        }
+
+        p, span {
+            color: var(--grey);
+        }
+    }
+
+    #button-wrapper {
+        text-align: right;
+
+
+        button {
+            background-color: var(--light-pink);
+            color: var(--saturated-pink);
+            justify-self: center;
+
+            &:hover {
+                background-color: var(--very-light-pink);
+            }
+        }
+    }
+
+}

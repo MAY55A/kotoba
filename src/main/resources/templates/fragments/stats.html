@@ -1,0 +1,29 @@
+<div th:fragment="stats" class="stats">
+    <h2>Stats</h2>
+    <table>
+        <tr>
+            <td>total XP</td>
+            <td colspan="2" id="xp"></td>
+        </tr>
+        <tr>
+            <td>error rate</td>
+            <td id="errors"></td>
+            <td>
+                <div class="progress">
+                    <div id="error-bar" class="progress-bar bg-danger" role="progressbar" aria-valuenow="0"
+                         aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>total kanji learned</td>
+            <td id="total-kanji"></td>
+            <td>
+                <div class="progress">
+                    <div id="total-kanji-bar" class="progress-bar bg-warning" role="progressbar" aria-valuenow="0"
+                         aria-valuemin="0" aria-valuemax="100" style="width: "></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

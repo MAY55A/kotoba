@@ -23,6 +23,11 @@ public class IndexController {
         return "pages/Login";
     }
 
+    @GetMapping("/profile")
+    public String profile() {
+        return "pages/Profile";
+    }
+
     @GetMapping("/learn")
     public String learn(Model model) {
         model.addAttribute("currentPath", "/learn");

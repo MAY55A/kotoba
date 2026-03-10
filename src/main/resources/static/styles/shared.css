@@ -12,7 +12,7 @@
     --very-light-pink: #FFDCE0;
     --whitesh-pink: #FFF5F6;
     --whitesh-yellow: rgba(255, 247, 210, 0.3);
-    --navbar-font: "Jaro";
+    --title-font: "Jaro";
     --normal-font: "Kaushan Script";
     --logo-font-size: 1.2em;
     --normal-font-size: clamp(0.8em, 2vw, 1.1em);
@@ -226,5 +226,57 @@ a {
 
     #loading {
         background-color: transparent;
+    }
+}
+
+.progress-info {
+    padding-top: 5em;
+    width: 70%;
+    text-align: center;
+    font-size: clamp(0.6em, 2vw, 0.8em);
+
+    > div {
+        background-color: var(--whitesh-yellow);
+        border: var(--dashed-pink-border);
+        border-radius: 10px;
+        padding: 1em;
+        margin-bottom: 1em;
+
+        table {
+            width: 100%;
+
+            td {
+                width: clamp(6em, 10vw, 10em);
+            }
+
+            td:nth-child(2) {
+                color: var(--saturated-pink);
+            }
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: space-evenly;
+
+            div {
+                border: 2px solid #F6AEB938;
+                border-left-width: 5px;
+                border-top-width: 3px;
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            span {
+                white-space: nowrap;
+            }
+        }
+    }
+
+    h2 {
+        font-size: clamp(1em, 3vw, 1.5em);
+        color: var(--normal-font-color);
+        margin-bottom: 30px;
     }
 }
