@@ -3,9 +3,10 @@ package com.may55a.kotoba.models;
 import jakarta.persistence.*;
 import lombok.*;
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class User implements Serializable {
     private String password;
 
     @Column
-    private String profilePicture;
+    private String profilePicture = "http://localhost:8080/images/avatars/default_avatar.png";
 
     @Column
     private String description;
@@ -42,12 +43,18 @@ public class User implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String favourites = "";
 
-    @Column(columnDefinition = "TIMESTAMPTZ")
-    private LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(columnDefinition = "TIMESTAMPTZ", updatable = false)
+    private OffsetDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AuthProvider authProvider;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AccountType accountType = AccountType.FREE;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
