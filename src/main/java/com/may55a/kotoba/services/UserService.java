@@ -10,10 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -30,10 +32,10 @@ public class UserService {
 
     public User registerUser(String email, String userName, String password) throws IllegalArgumentException{
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Email already in use");
+            throw new IllegalArgumentException("Email already in use.");
         }
         if (userRepository.existsByUsername(userName)) {
-            throw new IllegalArgumentException("User name already in use");
+            throw new IllegalArgumentException("User name already in use.");
         }
 
         User user = new User();
@@ -98,6 +100,50 @@ public class UserService {
             existingUser.setFavourites(updatedData.getFavourites());
 
         userRepository.save(existingUser);
+    }
+
+    public void updateUsernameAndEmail(Map<String, String> updatedData) {
+        User existingUser = getLoggedInUser();
+        String userName = updatedData.get("username");
+        String email = updatedData.get("email");
+        if (userName != null && !userName.equals(existingUser.getUsername())) {
+            if (userRepository.existsByUsername(userName)) {
+                throw new IllegalArgumentException("User name already in use.");
+            } else {
+                existingUser.setUsername(userName);
+            }
+        }
+
+        if (email != null && !email.equals(existingUser.getEmail())) {
+            if (userRepository.existsByEmail(email)) {
+                throw new IllegalArgumentException("Email already in use.");
+            } else {
+                existingUser.setEmail(email);
+            }
+        }
+
+        userRepository.save(existingUser);
+    }
+
+    public void updatePassword(String newPassword) {
+        User existingUser = getLoggedInUser();
+        if (newPassword != null) {
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            if (encodedPassword.equals(existingUser.getPassword())) {
+                throw new IllegalArgumentException("Same old password entered.");
+            } else {
+                existingUser.setPassword(encodedPassword);
+                userRepository.save(existingUser);
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid password.");
+        }
+    }
+
+    @Transactional
+    public void deleteUser() {
+        User currentUser = getLoggedInUser();
+        userRepository.delete(currentUser);
     }
 
 }
