@@ -68,6 +68,21 @@ button {
     cursor: pointer;
 }
 
+
+form button {
+    width: 10em;
+    grid-row: 2;
+    align-self: center;
+    background-color: var(--saturated-yellow) !important;
+    color: var(--normal-font-color) !important;
+    box-shadow: 5px 5px 10px 4px hsla(217, 19%, 35%, 0.1);
+
+    &:hover {
+        background-color: var(--pink) !important;
+        color: var(--whitesh-pink) !important;
+    }
+}
+
 a {
     cursor: pointer;
     text-decoration: none;

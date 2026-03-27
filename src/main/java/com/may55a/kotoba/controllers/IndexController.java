@@ -28,6 +28,11 @@ public class IndexController {
         return "pages/Profile";
     }
 
+    @GetMapping("/account-settings")
+    public String accountSettings() {
+        return "pages/AccountSettings";
+    }
+
     @GetMapping("/learn")
     public String learn(Model model) {
         model.addAttribute("currentPath", "/learn");
