@@ -29,47 +29,6 @@
         <a href="/oauth2/authorization/google" id="google"><img th:src="@{/icons/google.png}" alt="google icon"><span>Sign up with Google</span></a>
         <p>You already have an account ? <a href="/login" id="redirect">Login</a></p>
     </main>
-    <script>
-        document.getElementById("signup").addEventListener("submit", async function(event) {
-            event.preventDefault();
-
-            const email = document.getElementById("email").value;
-            const username = document.getElementById("username").value;
-            const password1 = document.getElementById("password1").value;
-            const password2 = document.getElementById("password2").value;
-            const message = document.getElementById("message");
-            if(password1 !== password2) {
-                message.innerText = "Passwords do not match";
-            } else {
-                const userData = {
-                    email: email,
-                    username: username,
-                    password: password1
-                };
-
-                try {
-                    const response = await fetch("/api/auth/signup", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(userData)
-                    });
-                    let text = await response.text();
-                    if(text.length > 50)
-                        message.innerText = "An error occurred";
-                    else
-                        message.innerText = text
-
-                    if (response.ok)
-                        window.location.href = "/login";
-                } catch (error) {
-                    console.log("An error occurred: " + error.message);
-                    message.innerText = "An error occurred";
-
-                }
-            }
-        });
-    </script>
+    <script type="module" th:src="@{/scripts/pages/signupPage.js}"></script>
 </body>
 </html>
