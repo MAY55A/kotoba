@@ -9,66 +9,67 @@
 </head>
 <body>
 <header th:replace="fragments/navbar"></header>
-    <main>
-        <div class="hero1">
-            <div class="hero-img1"></div>
-            <h1>
-                Welcome to KOTOBA ! <br>
-                Start your Kanji learning journey today.
-            </h1>
-        </div>
-        <form class="search-bar" id="search-bar" onsubmit="return false;">
-            <button id="search-btn" type="button">search</button>
-            <input type="text" placeholder="Enter word in English..." id="search-input" required>
-        </form>
-        <div class="hero2">
-            <p>
-                Features: <br>
-                - Learn Kanji: Detailed stroke and radical info with some examples<br>
-                - kanji tests: test what you learned with grade tests<br>
-                - Random quizzes: test your Japanese skills with quizzes<br>
-                - Progress Tracking: see your progress and achievements<br>
-                And more to come...
-            </p>
-            <div class="hero-img2"></div>
-        </div>
-        <div class="word-section">
-            <p>Random Word</p>
-            <span class="word" id="random-word">...</span>
-            <div class="word-details">
-                <p id="word-pronunciation">Loading...</p>
-                <p id="word-meaning"></p>
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-left">
+                <h1><span class="word-span">Master</span> <span class="word-span">Kanji,</span> <span class="word-span">Step</span>
+                    <span class="word-span">by</span> <span class="word-span">Step</span></h1>
+                <p class="fade-up delay">
+                    Progress through 6 structured grades, learn kanji by units, test your knowledge,
+                    and track your level with smart quizzes.
+                </p>
+
+                <form class="search-bar" id="search-bar" onsubmit="return false;">
+                    <input id="search-input" placeholder="Search a kanji in English..." required type="text">
+                    <button id="search-btn" type="submit">search</button>
+                </form>
+
             </div>
+
+            <div class="hero-right">
+                <img alt="fox welcoming" class="mascot" id="mascot" th:src="@{/images/mascot/happy.png}">
+            </div>
+
         </div>
-    </main>
-    <script type="module" th:src="@{/scripts/pages/homePage.js}"></script>
-    <footer class="site-footer mt-4">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-sm-4">
-                    <h5>Join Us</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="/">home</a></li>
-                        <li><a href="login">connect</a></li>
-                        <li><a href="/signup">register</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <h5>Contact</h5>
-                    <ul class="list-unstyled">
-                        <li>email : mayssagnm@gmail.com</li>
-                        <li>tel : 98 765 432</li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <a href="#"><img th:src="@{/icons/github.png}" alt="github icon" width="30"></a>&nbsp;
-                    <a href="#"><img th:src="@{/icons/linkedin.png}" alt="linkedin icon" width="30"></a>
+    </section>
+
+
+    <section class="actions">
+        <a class="card" th:href="@{/signup}">
+            <img alt="fox creating an account" th:src="@{/images/create_account.png}">
+            <span>Create an account</span>
+        </a>
+        <a class="card" th:href="@{/learn}">
+            <img alt="fox learning" th:src="@{/images/learn.png}">
+            <span>Start learning</span>
+        </a>
+        <a class="card" th:href="@{/quiz}">
+            <img alt="fox taking a quiz" th:src="@{/images/practice.png}">
+            <span>Take a quiz</span>
+        </a>
+    </section>
+
+
+    <section class="random-word-container">
+        <h3>🌸 Word of the Day</h3>
+        <div class="word-card box">
+            <svg class="border">
+                <rect height="100%" rx="12" ry="12" width="100%" x="0" y="0"/>
+            </svg>
+            <div>
+                <h2 id="random-word">--</h2>
+                <div class="word-details">
+                    <p id="word-pronunciation">Loading...</p>
+                    <p class="rotating-word" id="word-meaning">--</p>
                 </div>
             </div>
+
         </div>
-        <div class="footer-copyright py-4">
-            <p>©2025 Copyright KOTOBA</p>
-        </div>
-    </footer>
+    </section>
+
+</main>
+<header th:replace="fragments/footer"></header>
+<script th:src="@{/scripts/pages/homePage.js}" type="module"></script>
 </body>
 </html>
