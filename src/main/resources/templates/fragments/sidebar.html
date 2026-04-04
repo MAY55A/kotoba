@@ -1,4 +1,4 @@
-<nav th:fragment="sidebar(currentPath)">
+<nav class="sidebar" th:fragment="sidebar(currentPath)">
     <a th:href="@{/learn}" th:classappend="${currentPath == '/learn'} ? 'active'">
         <span th:replace="fragments/icons/book"></span>
         <span>Learn</span>

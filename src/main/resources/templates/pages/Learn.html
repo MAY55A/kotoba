@@ -9,58 +9,58 @@
     <title>KOTOBA | LEARN</title>
 </head>
 <body>
-<header th:replace="fragments/navbar"></header>
-    <script type="module" th:src="@{/scripts/pages/learnPage.js}"></script>
-    <main>
-        <nav th:replace="fragments/sidebar :: sidebar(${currentPath})"></nav>
-        <section>
-            <h1>Continue your learning path and unlock all the grades</h1>
-            <div class="grades">
-                <div class="grade" data-grade="1">
-                    <a>
-                        <h2>Grade 1</h2>
-                        <span class="status"></span>
-                    </a>
-                </div>
-                <div class="grade" data-grade="2">
-                    <a>
-                        <h2>Grade 2</h2>
-                        <span class="status"></span>
-                    </a>
-                </div>
-                <div class="grade" data-grade="3">
-                    <a>
-                        <h2>Grade 3</h2>
-                        <span class="status"></span>
-                    </a>
-                </div>
-                <div class="grade" data-grade="4">
-                    <a>
-                        <h2>Grade 4</h2>
-                        <span class="status"></span>
-                    </a>
-                </div>
-                <div class="grade" data-grade="5">
-                    <a>
-                        <h2>Grade 5</h2>
-                        <span class="status"></span>
-                    </a>
-                </div>
-                <div class="grade" data-grade="6">
-                    <a>
-                        <h2>Grade 6</h2>
-                        <span class="status"></span>
-                    </a>
-                </div>
+<header th:replace="fragments/navbar :: navbar(${currentPath})"></header>
+<main>
+    <nav th:replace="fragments/sidebar :: sidebar(${currentPath})"></nav>
+    <section>
+        <h1>Continue your learning path and unlock all the grades</h1>
+        <div class="grades">
+            <div class="grade" data-grade="1">
+                <a>
+                    <h2>Grade 1</h2>
+                    <span class="status"></span>
+                </a>
             </div>
-            <div class="progress-info">
-                <div th:replace="fragments/stats"></div>
-                <div class="achievements">
-                    <h2>Achievements</h2>
-                    <div class="badges" id="achievements"></div>
-                </div>
+            <div class="grade" data-grade="2">
+                <a>
+                    <h2>Grade 2</h2>
+                    <span class="status"></span>
+                </a>
             </div>
-        </section>
-    </main>
+            <div class="grade" data-grade="3">
+                <a>
+                    <h2>Grade 3</h2>
+                    <span class="status"></span>
+                </a>
+            </div>
+            <div class="grade" data-grade="4">
+                <a>
+                    <h2>Grade 4</h2>
+                    <span class="status"></span>
+                </a>
+            </div>
+            <div class="grade" data-grade="5">
+                <a>
+                    <h2>Grade 5</h2>
+                    <span class="status"></span>
+                </a>
+            </div>
+            <div class="grade" data-grade="6">
+                <a>
+                    <h2>Grade 6</h2>
+                    <span class="status"></span>
+                </a>
+            </div>
+        </div>
+        <div class="progress-info">
+            <div th:replace="fragments/stats"></div>
+            <div class="achievements">
+                <h2>Achievements</h2>
+                <div class="badges" id="achievements"></div>
+            </div>
+        </div>
+    </section>
+</main>
+<script th:src="@{/scripts/pages/learnPage.js}" type="module"></script>
 </body>
 </html>

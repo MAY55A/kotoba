@@ -1,11 +1,15 @@
-<header th:fragment="navbar">
+<header class="navbar" th:fragment="navbar(currentPath)">
     <a class="logo" href="/">
-        <span>言葉</span>
-        <span>KOTOBA</span>
+        <span class="kanji">言葉</span>
+        <span class="brand">KOTOBA</span>
     </a>
-    <ul class="nav-items">
-        <li><a href="/learn">Start Learning</a></li>
-        <li><a href="/">Start a quiz</a></li>
-    </ul>
-    <div id="account"></div>
+
+    <nav>
+        <ul class="nav-items">
+            <li><a href="/learn" th:classappend="${currentPath == '/learn'} ? 'active'">Start Learning</a></li>
+            <li><a href="/quiz" th:classappend="${currentPath == '/quiz'} ? 'active'">Random Quiz</a></li>
+        </ul>
+    </nav>
+
+    <div id="account" class="account"></div>
 </header>

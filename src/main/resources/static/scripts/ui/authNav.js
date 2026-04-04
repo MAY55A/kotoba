@@ -7,7 +7,7 @@ export async function loadAuthNav(user) {
     if (user !== null) {
         document.getElementById("account").innerHTML = `
                         <a href="/logout" class="signup">logout</a>
-                        <a href="/profile"><img src="${user.profilePicture ?? '/images/girl1.jpg'}"></a>
+                        <a href="/profile" title="profile"><img src="${user.profilePicture ?? '/images/avatars/default_avatar.png'}"></a>
                 `;
     } else {
         document.getElementById("account").innerHTML = `

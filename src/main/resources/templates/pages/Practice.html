@@ -9,7 +9,7 @@
     <title>KOTOBA | Practice</title>
 </head>
 <body>
-<header th:replace="fragments/navbar"></header>
+<header th:replace="fragments/navbar :: navbar(null)"></header>
 <script type="module" th:src="@{/scripts/pages/practicePage.js}"></script>
 <main>
     <nav th:replace="fragments/sidebar :: sidebar(${currentPath})"></nav>
