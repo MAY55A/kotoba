@@ -1,106 +1,117 @@
 @import url("shared.css");
 
-main {
-    height: 100%;
+/* CONTAINER */
+.signup-container, .login-container {
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fff0f5, #fff8dc);
 }
 
-h1, h2 {
-    color: var(--saturated-pink);
+/* CARD */
+.signup-card, .login-card {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
 }
 
-form {
-    width: 35em;
-    padding: 2em 5em;
-    display: grid;
-    grid-template: 80% 20% / 33% 33% 33%;
-    grid-gap: 1em;
-    border-radius: 10px;
-    background-color: var(--whitesh-yellow);
-    box-shadow: 10px 20px 30px 10px hsla(317, 22%, 42%, 0.1);
-    border: var(--dashed-pink-border);
-    input{
-        margin-top: -1em;
-        margin-left: 2em;
-        width: 17em;
-        font-size: 0.8em;
-    }
-    .fields {
-        grid-row: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        gap: 10px;
-    }
+/* FORM */
+.signup-left, .login-right {
+    flex: 1;
+    padding: 2em;
+}
 
-    &#login {
-        padding-left: 1em;
-        padding-top: 0;
-        align-items: center;
+.fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 
-        .fields {
-            grid-column: 2 / -1;
-            justify-self: end;
-            justify-content: space-around;
-            height: 60%;
-        }
-        img {
-            grid-row: 1 / -1;
-            grid-column: 1;
-            width: 22em;
-            z-index: -1;
-        }
-        button {
-            grid-column: 3;
-        }
-    }
+    input {
+        border: 1px solid #ddd;
 
-    &#signup {
-        .fields {
-            grid-column: 1 / 3;
-        }
-        img {
-            width: 13em;
-        }
-
-        button {
-            justify-self: center;
-            grid-column: 2;
-        }
-
-        label {
-            margin-bottom: 10px;
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 182, 193, 0.6);
         }
     }
 }
 
-#google {
+/* BUTTON */
+button {
+    width: 100%;
+    margin-top: 2em;
+}
+
+/* IMAGE */
+.signup-right, .login-left {
+    flex: 1;
+    background: var(--whitesh-pink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 80%;
+        animation: float 3s ease-in-out infinite;
+    }
+}
+
+
+/* DIVIDER */
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.divider span {
+    padding: 0 10px;
+}
+
+/* GOOGLE BUTTON */
+.google-btn {
     display: flex;
     font-weight: bold;
     padding: 0.5em 5em;
-    border: var(--dashed-pink-border);
     border-radius: 10px;
+    border: var(--dashed-pink-border);
     background-color: var(--light-pink);
     color: var(--normal-font-color);
+    box-shadow: 5px 5px 10px 4px hsla(217, 19%, 35%, 0.1);
+    transition: 0.2s;
 
     &:hover {
-        background-color: var(--light-yellow);
+        transform: scale(1.05);
     }
 
-    img{
+    img {
         width: 1.5em;
         margin-right: 0.5em;
     }
+
 }
 
-a#redirect{
+/* REDIRECT */
+.redirect:hover {
     text-decoration: underline;
 }
 
+/* ERROR MESSAGE */
 #message {
+    margin-top: 1em;
     text-align: center;
     color: var(--red);
+}
+
+/* ON SMALL SCREENS */
+@media (max-width: 600px) {
+    .signup-right, .login-left {
+        display: none;
+    }
 }
