@@ -1,5 +1,6 @@
 import {fetchGradeTest} from "../api/testApi.js";
 import {displayTest} from "../render/displayTest.js";
+import {MASCOT_MAP} from "../utils/maps.js";
 
 const nbTest = document.getElementById("test").value;
 const grade = document.getElementById("grade").value;
@@ -10,11 +11,24 @@ async function onShowResult(learningStats, result, testResultElem) {
         testResultElem.classList.add("failed");
         result.audio = "/sounds/lose.mp3";
         result.content = `
-            <h2>Sorry ! You did not pass </h2>
-            <p>Your score: <span>${result.stats.totalPoints}</span></p>
-            <p>Minimum required score: <span>${result.stats.requiredScore}</span></p>
-            <img src="/images/sadCat.jpeg" alt="sad cat"><br>
-            <a href="/learn/grades/${grade}">Close</a>
+                <div class="result-left">
+                    <h2>Sorry! You did not pass!</h2>
+                    <div class="scores">
+                        <div class="earned">
+                            <p>Your score</p>
+                            <span>${result.stats.totalPoints}</span>
+                        </div>
+                        <div class="required">
+                            <p>Required score</p>
+                            <span>${result.stats.requiredScore}</span>
+                        </div>
+                    </div>
+                    <p class="message">Don’t worry, keep practicing and you’ll get it!</p>
+                    <a href="/learn/grades/${grade}">Close</a>
+                </div>
+                <div class="result-right">
+                    <img alt="sad mascot" src="${MASCOT_MAP.failed}"><br>
+                </div>
         `;
     } else { // Test passed
         let isNewTest = learningStats.currentGrade == grade &&
@@ -32,23 +46,35 @@ async function onShowResult(learningStats, result, testResultElem) {
         let msg = "";
         if (isNewTest) {
             if (nbTest === "final")
-                if (grade === "6")
-                    msg = "Congratulations, You completed all the grades !";
-                else
-                    msg = "Congratulations, You unlocked the next grade !";
+                msg = grade === "6"
+                    ? "Congratulations, You completed all grades!"
+                    : "Congratulations, You unlocked the next grade!"
             else
-                msg = "Now you can continue your learning path !";
+                msg = "Keep progressing in your learning path!";
         }
         result.content = `
-            <h2>Great Job ! You passed this test </h2>
-            <p>XP earned: <span>${result.stats.totalPoints}</span></p>
-            <p>${msg}</p>
-            <img src="/images/happyCat.jpeg" alt="happy cat"><br>
-            <a href="/learn/grades/${grade}">Close</a>
+            <div class="result-left">
+                <h2>Great Job! You passed!</h2>
+                <div class="scores">
+                    <div class="earned">
+                        <p>Your score</p>
+                        <span>${result.stats.totalPoints}</span>
+                    </div>
+                </div>
+                <p class="message">${msg}</p>
+                <a href="/learn/grades/${grade}">Close</a>
+            </div>
+            <div class="result-right">
+                <img alt="celebrating mascot" src="${MASCOT_MAP.passed}"><br>
+            </div>
         `;
     }
 }
 
+function onExit() {
+    window.location.href = `/learn/grades/${grade}`;
+}
+
 fetchGradeTest(nbTest, grade).then((testData) => {
-    displayTest(testData, onShowResult, grade);
+    displayTest(testData, onShowResult, onExit, grade);
 });

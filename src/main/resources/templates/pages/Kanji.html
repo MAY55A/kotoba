@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta content="initial-scale=1, maximum-scale=1" name="viewport">
     <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/styles/kanji_test.css}">
     <title th:text="'KOTOBA | Kanji | ' + ${kanji}">Kotoba | Kanji</title>
@@ -11,45 +11,49 @@
     </script>
 </head>
 <body>
-    <main>
-        <div id="loading" class="modal-overlay">
-            <div>
-                <div class="spinner"></div>
-                <p>Loading, please wait...</p>
-            </div>
+<main>
+    <div class="modal-overlay" id="loading">
+        <div>
+            <div class="spinner"></div>
+            <p>Loading, please wait...</p>
         </div>
-        <a class="go-back" th:if="${grade == null}" th:href="@{'/favourites'}" title="go back">⬅</a>
-        <a class="go-back" th:unless="${grade == null}" th:href="@{'/learn/grades/' + ${grade}}" title="go back">⬅</a>
-        <header>
-            <h1><span id="kanji-audio" class="audio-symbol">🔊</span><span th:text="${kanji}" id="kanji"></span></h1>
-            <input th:value="${id}" type="hidden" id="kanji-id">
-            <div id="meaning"></div>
-            <div id="readings"></div>
-            <span id="heart" class="heart">&hearts;</span>
-        </header>
-        <section id="kanji-info">
-            <div>
-                <h2>Radical</h2>
-                <div id="radicals"></div>
-            </div>
-            <div>
-                <h2>Examples</h2>
-                <div id="examples"></div>
-            </div>
-            <div>
-                <h2>Mnemonic hint</h2>
-                <div id="mn-hint"></div>
-            </div>
-            <video id="kanji-video" controls>
-                <source src="" type="video/mp4">
-            </video>
-            <script type="module" th:if="${grade == null}" th:src="@{/scripts/pages/favouriteKanjiPage.js}"></script>
-            <script type="module" th:unless="${grade == null}" th:src="@{/scripts/pages/gradeKanjiPage.js}"></script>
-        </section>
-        <footer th:if="${grade != null}">
-            <button id="previous" class="hidden">previous</button>
-            <button id="next">next</button>
-        </footer>
-    </main>
+    </div>
+    <a class="go-back" th:href="@{'/favourites'}" th:if="${grade == null}" title="go back">⬅</a>
+    <a class="go-back" th:href="@{'/learn/grades/' + ${grade}}" th:unless="${grade == null}" title="go back">⬅</a>
+    <header>
+        <h1>
+            <span class="audio-symbol" id="kanji-audio" th:insert="fragments/icons/audio"></span>
+            <span id="kanji" th:text="${kanji}"></span>
+        </h1>
+        <input id="kanji-id" th:value="${id}" type="hidden">
+        <div id="meaning"></div>
+        <div id="readings"></div>
+        <span class="heart" id="heart">&hearts;</span>
+    </header>
+    <section id="kanji-info">
+        <div class="info-card">
+            <h2>Radical</h2>
+            <div id="radicals"></div>
+        </div>
+        <div class="info-card">
+            <h2>Examples</h2>
+            <div id="examples"></div>
+        </div>
+        <video controls id="kanji-video">
+            <source src="" type="video/mp4">
+        </video>
+        <div class="info-card">
+            <h2>Mnemonic hint</h2>
+            <div id="mn-hint"></div>
+        </div>
+    </section>
+    <footer th:if="${grade != null}">
+        <button class="hidden" id="previous">previous</button>
+        <button id="next">next</button>
+    </footer>
+</main>
+
+<script th:if="${grade == null}" th:src="@{/scripts/pages/favouriteKanjiPage.js}" type="module"></script>
+<script th:src="@{/scripts/pages/gradeKanjiPage.js}" th:unless="${grade == null}" type="module"></script>
 </body>
 </html>

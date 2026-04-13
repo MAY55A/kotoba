@@ -1,5 +1,5 @@
 import {fetchFavourites, updateUserData} from "../api/userApi.js";
-import {bindAudioSymbols} from "../utils/audio.js";
+import {audioIcon, bindAudioSymbols} from "../utils/audio.js";
 
 export async function displayKanjiData(data) {
     const heart = document.getElementById("heart");
@@ -8,10 +8,7 @@ export async function displayKanjiData(data) {
     document.getElementById('loading').classList.add("hidden");
     let examples = "";
     for (let ex of data.examples.slice(0, 3)) {
-        examples += `<div>
-                      <span class="audio-symbol" data-audio="${ex.audio}">🔊</span>
-                      ${ex.japanese}<br>${ex.meaning}
-                    </div>`;
+        examples += "<div>" + audioIcon(ex.audio) + `${ex.japanese}<br>${ex.meaning}</div>`;
     }
     document.getElementById('kanji-audio').dataset.audio = "http://localhost:8080/" + data.audioPath;
     document.getElementById('examples').innerHTML = examples;

@@ -51,7 +51,7 @@ h2 {
 
 input, button {
 / / height: 3 em;
-    border-radius: 10px;
+    border-radius: 15px;
     border: none;
     outline-color: var(--pink);
     font-family: var(--normal-font);
@@ -61,11 +61,13 @@ input, button {
 input {
     background-color: var(--whitesh-pink);
     box-shadow: 5px 5px 10px 5px hsla(217, 19%, 35%, 0.1);
+    padding: 1em 2em;
 }
 
 button {
     font-weight: bold;
     cursor: pointer;
+    padding: 0.5em 2em;
     transition: 0.2s;
 }
 
@@ -182,7 +184,7 @@ form button {
     }
 }
 
-.option-card {
+.option-card, .info-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -314,5 +316,16 @@ form button {
     }
     50% {
         transform: translateY(-12px);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

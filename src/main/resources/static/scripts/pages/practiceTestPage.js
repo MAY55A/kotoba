@@ -1,23 +1,41 @@
 import {fetchPracticeTest} from "../api/testApi.js";
 import {displayTest} from "../render/displayTest.js";
+import {MASCOT_MAP} from "../utils/maps.js";
 
 const type = document.getElementById("type").value;
 const questionsCount = Number(document.getElementById("questions-count").value);
 const grade = (type === "grade") ? document.getElementById("grade").value : null;
 
 function onShowResult(learningStats, result, testResultElem) {
-
     result.content = `
-            <h2>Practice Completed ! </h2>
-            <p>XP earned: <span>${result.stats.totalPoints}</span></p>
-            <p>Correct answers: <span>${result.stats.correctAnswers}</span></p>
-            <p>Errors: <span>${result.stats.errors}</span></p>
-            <img src="/images/happyCat.jpeg" alt="happy cat"><br>
-            <a href="/practice">Close</a>
-       `;
+                <div class="result-left">
+                <h2>Practice Completed ! </h2>
+                    <div class="scores">
+                        <div class="earned">
+                            <p>XP earned</p>
+                            <span>${result.stats.totalPoints}</span>
+                        </div>
+                        <div class="correct-answers">
+                            <p>Correct answers</p>
+                            <span>${result.stats.correctAnswers}</span>
+                        </div>
+                        <div class="errors">
+                            <p>Errors</p>
+                            <span>${result.stats.correctAnswers}</span>
+                        </div>
+                        </div>
+                    <a href="/practice">Close</a>
+                </div>
+                <div class="result-right">
+                    <img alt="tired mascot" src="${MASCOT_MAP.training}"><br>
+                </div>
+        `;
+}
 
+function onExit() {
+    window.location.href = "/practice";
 }
 
 fetchPracticeTest(type, questionsCount, grade).then((testData) => {
-    displayTest(testData, onShowResult, grade);
+    displayTest(testData, onShowResult, onExit, grade);
 });

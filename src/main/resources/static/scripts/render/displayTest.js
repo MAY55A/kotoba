@@ -1,8 +1,9 @@
-import {bindAudioSymbols, playAudio} from "../utils/audio.js";
+import {audioIcon, bindAudioSymbols, playAudio} from "../utils/audio.js";
 import {fetchLearningStats, updateUserData} from "../api/userApi.js";
+import {MASCOT_MAP} from "../utils/maps.js";
 
 
-export function displayTest(test, onShowResult, grade) {
+export function displayTest(test, onShowResult, onExit, grade) {
     const progressBar = document.getElementById("progress-bar");
     const startBtn = document.getElementById("start-btn");
     const loading = document.getElementById('loading');
@@ -96,9 +97,9 @@ export function displayTest(test, onShowResult, grade) {
             text.innerText = question.text;
             result.innerHTML = "";
             if (question.type === "SHOW_AUDIO")
-                word.innerHTML = `<span class="audio-symbol" data-audio="http://localhost:8080/${question.audio}">🔊</span>`;
+                word.innerHTML = audioIcon(`http://localhost:8080/${question.audio}`)
             else if (question.type === "SHOW_KANJI" && question.audio !== null)
-                word.innerHTML = `<span class="audio-symbol" data-audio="http://localhost:8080/${question.audio}">🔊</span>${question.word}`;
+                word.innerHTML = audioIcon(`http://localhost:8080/${question.audio}`) + question.word;
             else
                 word.innerHTML = question.word;
 
@@ -145,13 +146,13 @@ export function displayTest(test, onShowResult, grade) {
         playAudio("/sounds/correct.mp3");
         result.innerHTML = `<span class="correct">CORRECT !</span><br>
                 <span id="xp">+ ${points} XP</span><br>
-                <img src="/images/satisfiedCat.jpeg" alt="satisfied cat">`;
+                <img src="${MASCOT_MAP.correct}" alt="excited mascot">`;
     }
 
     function showBadResult() {
         playAudio("/sounds/wrong.mp3");
         result.innerHTML = `<span class="wrong">INCORRECT !</span><br>
-                        <img src="/images/annoyedCat.jpeg" alt="annoyed cat">`;
+                        <img src="${MASCOT_MAP.wrong}" alt="disappointed mascot">`;
     }
 
     async function showTestResult() {
@@ -201,6 +202,6 @@ export function displayTest(test, onShowResult, grade) {
 
     function exitTest() {
         preventNavigation = false;
-        window.location.href = `/learn/grades/${grade}`;
+        onExit();
     }
 }
