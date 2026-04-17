@@ -50,13 +50,11 @@ section:not(#answer) {
         }
 
         .red {
-            background-color: var(--red);
-            opacity: 0.5;
+            background-color: color-mix(in srgb, var(--red) 70%, white);
         }
 
         .green {
-            background-color: var(--green);
-            opacity: 0.5;
+            background-color: color-mix(in srgb, var(--green) 40%, white);
         }
     }
 }
@@ -212,17 +210,25 @@ footer {
 
 /* Test Result */
 #test-result {
+    --color: var(--grey);
     width: clamp(200px, 70%, 800px);
     min-height: 40%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 6px solid var(--light-grey);
+    border-top: 6px solid var(--color);
     border-radius: 20px;
     background: white;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     animation: fadeInUp 0.4s ease;
+
+    h2 {
+        color: var(--color);
+        font-family: var(--title-font);
+        font-size: clamp(1.5em, 5vw, 2em);
+        margin: 0 0 1em 0;
+    }
 
     &.passed {
         border-top: 6px solid var(--yellow);
@@ -252,6 +258,12 @@ footer {
         }
     }
 
+    &.level {
+        .result-right img {
+            animation: float 3s ease-in-out infinite;
+        }
+    }
+
     .result-left {
         flex: 2;
         text-align: center;
@@ -264,16 +276,10 @@ footer {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--light-grey);
+        background-color: color-mix(in srgb, var(--color) 20%, white);
         padding: 1em;
         border-bottom-right-radius: 20px;
         border-top-right-radius: 17px;
-    }
-
-    h2 {
-        font-family: var(--title-font);
-        font-size: clamp(1.5em, 5vw, 2em);
-        margin: 0 0 1em 0;
     }
 
     .scores {
@@ -282,16 +288,15 @@ footer {
         gap: 2em;
         margin-bottom: 2em;
 
+        p {
+            margin-bottom: 0;
+        }
+
         span {
             font-size: 1.5em;
             font-weight: bold;
             display: block;
         }
-    }
-
-    .earned p,
-    .required p {
-        margin-bottom: 0;
     }
 
     .required, .errors {
@@ -307,6 +312,7 @@ footer {
     }
 
     a {
+        display: inline-block;
         background-color: var(--saturated-yellow);
         padding: 0.7em 2em;
         margin-top: 2em;

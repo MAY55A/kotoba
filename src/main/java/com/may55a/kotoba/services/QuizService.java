@@ -12,16 +12,17 @@ public class QuizService {
     private final KanjiService kanjiService;
     private final UserService userService;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
+    private final int TOTAL_KANJI = 8385;
 
     @Autowired
     public QuizService(KanjiService kanjiService, UserService userService) {
-        this.kanjiService= kanjiService;
+        this.kanjiService = kanjiService;
         this.userService = userService;
     }
 
     public Quiz getUnitTest(String grade, int nbTest) {
-        List<String> list = getListKanji(grade, (nbTest-1)*10, nbTest*10);
-        if(list.isEmpty())
+        List<String> list = getListKanji(grade, (nbTest - 1) * 10, nbTest * 10);
+        if (list.isEmpty())
             return null;
         return generateTest(list, 7, 75);
     }
@@ -32,28 +33,30 @@ public class QuizService {
 
     public Quiz getEntireGradeTest(String grade, int nbQuestions) {
         List<String> list = getListKanji(grade, 0, -1);
-        if(list.isEmpty())
+        if (list.isEmpty())
             return null;
         return generateTest(list, nbQuestions, 80);
     }
 
     public Quiz getPracticeTest(String type, int nbQuestions, String grade) {
-        if (type.equals("grade")) {
-            return getEntireGradeTest(grade, nbQuestions);
-        }
-        if (type.equals("favourites")) {
-            List<String> list = userService.getFavourites();
-            return generateTest(list, nbQuestions, 0);
-        }
-        if (type.equals("all")) {
-            LearningStats stats = userService.getLearningStats();
-            int currentGrade = stats.getCurrentGrade();
-            List<String> list = new ArrayList<>();
-            for (int i = 1; i < currentGrade; i++) {
-                list.addAll(getListKanji(String.valueOf(i), 0, -1));
+        switch (type) {
+            case "grade" -> {
+                return getEntireGradeTest(grade, nbQuestions);
             }
-            list.addAll(getListKanji(String.valueOf(currentGrade), 0, stats.getGradeProgress()));
-            return generateTest(list, nbQuestions, 0);
+            case "favourites" -> {
+                List<String> list = userService.getFavourites();
+                return generateTest(list, nbQuestions, 0);
+            }
+            case "all" -> {
+                LearningStats stats = userService.getLearningStats();
+                int currentGrade = stats.getCurrentGrade();
+                List<String> list = new ArrayList<>();
+                for (int i = 1; i < currentGrade; i++) {
+                    list.addAll(getListKanji(String.valueOf(i), 0, -1));
+                }
+                list.addAll(getListKanji(String.valueOf(currentGrade), 0, stats.getGradeProgress()));
+                return generateTest(list, nbQuestions, 0);
+            }
         }
         return null;
     }
@@ -70,7 +73,7 @@ public class QuizService {
         List<Question> questions = new ArrayList<Question>();
 
         // add a 'fill in the blank question' every 7 questions
-        for(int i=0; i<nbQuestions && i<kanjiListSize; i += 7) {
+        for (int i = 0; i < nbQuestions && i < kanjiListSize; i += 7) {
             String kanjiStr = kanjiList.get(random.nextInt(kanjiListSize));
             // if not already cached, fetch kanji details
             KanjiDetails randomKanji = kanjiCache.computeIfAbsent(
@@ -85,7 +88,8 @@ public class QuizService {
         }
         // add 'multiple choice questions' for the rest of the questions
         // use HashSet to avoid adding the same question
-        Set<MultipleChoiceQuestion> questionSet = new HashSet<>();;
+        Set<MultipleChoiceQuestion> questionSet = new HashSet<>();
+        ;
         int questionsLeft = nbQuestions - questions.size();
 
         while (questionSet.size() < questionsLeft) {
@@ -95,8 +99,8 @@ public class QuizService {
             List<KanjiDetails> randomKanjisWithDetails = randomKanjis
                     .stream()
                     .map(kanjiStr -> kanjiCache.computeIfAbsent(
-                        kanjiStr,
-                        kanjiService::getKanjiDetails
+                            kanjiStr,
+                            kanjiService::getKanjiDetails
                     ))
                     .toList();
 
@@ -127,8 +131,8 @@ public class QuizService {
     private MultipleChoiceQuestion generateMultipleChoiceQuestion(List<KanjiDetails> kanjiList, QuestionType type) {
         // populate options list with values (meaning or kanji itself depending on the question type)
         List<String> options = new ArrayList<>();
-        for(KanjiDetails option : kanjiList) {
-            if(type == QuestionType.SHOW_KANJI)
+        for (KanjiDetails option : kanjiList) {
+            if (type == QuestionType.SHOW_KANJI)
                 options.add(option.getMeaning());
             else
                 options.add(option.getKanji());
@@ -138,9 +142,9 @@ public class QuizService {
         KanjiDetails kanji = kanjiList.get(random.nextInt(kanjiList.size()));
         if (kanji == null)
             return null;
-        if(type == QuestionType.SHOW_KANJI)
+        if (type == QuestionType.SHOW_KANJI)
             return new MultipleChoiceQuestion(type, "What is the meaning of the kanji ?", kanji.getKanji(), kanji.getMeaning(), options, kanji.getAudioPath());
-        else if(type == QuestionType.SHOW_MEANING)
+        else if (type == QuestionType.SHOW_MEANING)
             return new MultipleChoiceQuestion(type, "What is the kanji for this word ?", kanji.getMeaning(), kanji.getKanji(), options, null);
         else if (type == QuestionType.SHOW_READING)
             return new MultipleChoiceQuestion(type, "What is the kanji for this reading ?", kanji.getKunyomi().get("romaji").isEmpty() ? kanji.getOnyomi().get("katakana") : kanji.getKunyomi().get("hiragana"), kanji.getKanji(), options, null);
@@ -151,7 +155,7 @@ public class QuizService {
     private FillInBlankQuestion generateFillInBlankQuestion(KanjiDetails kanji) {
         String kunyomi = kanji.getKunyomi().get("hiragana").isEmpty() ? "" : kanji.getKunyomi().get("romaji");
         String onyomi = kanji.getOnyomi().get("katakana").isEmpty() ? "" : kanji.getOnyomi().get("romaji");
-        if( kunyomi.isEmpty() && onyomi.isEmpty())
+        if (kunyomi.isEmpty() && onyomi.isEmpty())
             return null;
         String readings = kunyomi + ", " + onyomi;
         return new FillInBlankQuestion("Write a reading for this kanji", kanji.getKanji(), readings);
@@ -165,29 +169,50 @@ public class QuizService {
     }
 
     public Quiz generateSkillQuiz(int nbQuestions) {
+        int maxScore = 0;
         Quiz quiz = new Quiz();
         List<Question> questions = new ArrayList<>();
-        while (questions.size() < nbQuestions)
-            questions.add(generateRandomQuestion(5));
+        List<String> previousWords = new ArrayList<>();
+        MultipleChoiceQuestion generatedMCQ;
+
+        while (questions.size() < nbQuestions) {
+            generatedMCQ = generateRandomQuestion(6, previousWords);
+            if (generatedMCQ == null)
+                continue;
+            questions.add(generatedMCQ);
+            maxScore += generatedMCQ.getPoints();
+        }
+
         quiz.setQuestions(questions);
+        quiz.setRequiredScore(maxScore);
         return quiz;
     }
 
-    public MultipleChoiceQuestion generateRandomQuestion(int nbOptions) {
-        int randomOffset = random.nextInt(8385/nbOptions);
-        List<Map<String, Object>> words = kanjiService.getOffsetList(randomOffset, nbOptions);
-        Map<String, Object> chosenWord = words.remove(random.nextInt(nbOptions));
-        List<QuestionType> types = Arrays.stream(QuestionType.values()).filter(type -> type != QuestionType.SHOW_AUDIO).toList();
+    public MultipleChoiceQuestion generateRandomQuestion(int nbOptions, List<String> previousWords) {
+        try {
+            int randomOffset = random.nextInt(TOTAL_KANJI / nbOptions);
+            List<Map<String, Object>> words = kanjiService.getOffsetList(randomOffset, nbOptions);
+            if (words.size() < nbOptions)
+                throw new Exception("Not enough words");
+            Map<String, Object> chosenWord = words.get(random.nextInt(nbOptions));
+            if (previousWords.contains(chosenWord.get("word").toString()))
+                throw new Exception("Word already used");
+            previousWords.add(chosenWord.get("word").toString());
+            List<QuestionType> types = new ArrayList<>(List.of(QuestionType.values()));
+            types.remove(QuestionType.SHOW_AUDIO);
 
-        if (chosenWord.get("furigana").toString().isEmpty())
-            types.remove(QuestionType.SHOW_READING);
-        QuestionType type = types.get(random.nextInt(types.size()));
+            if (chosenWord.get("furigana").toString().isEmpty())
+                types.remove(QuestionType.SHOW_READING);
+            QuestionType type = types.get(random.nextInt(types.size()));
 
-        if(type == QuestionType.SHOW_KANJI)
-            return new MultipleChoiceQuestion(type, "What is the meaning of this word ?", chosenWord.get("word").toString(), chosenWord.get("meaning").toString(), words.stream().map((word)-> word.get("meaning").toString()).toList(), null);
-        else if(type == QuestionType.SHOW_MEANING)
-            return new MultipleChoiceQuestion(type, "What is the word with this meaning ?", chosenWord.get("meaning").toString(), chosenWord.get("word").toString(), words.stream().map((word)-> word.get("word").toString()).toList(), null);
-        else
-            return new MultipleChoiceQuestion(type, "What is the kanji for this reading ?", chosenWord.get("furigana").toString(), chosenWord.get("word").toString(), words.stream().map((word)-> word.get("word").toString()).toList(), null);
+            if (type == QuestionType.SHOW_KANJI)
+                return new MultipleChoiceQuestion(type, "What is the meaning of this word ?", chosenWord.get("word").toString(), chosenWord.get("meaning").toString().split("[,;]")[0], words.stream().map((word) -> word.get("meaning").toString().split("[,;]")[0]).toList(), null);
+            else if (type == QuestionType.SHOW_MEANING)
+                return new MultipleChoiceQuestion(type, "What is the word with this meaning ?", chosenWord.get("meaning").toString().split("[,;]")[0], chosenWord.get("word").toString(), words.stream().map((word) -> word.get("word").toString()).toList(), null);
+            else
+                return new MultipleChoiceQuestion(type, "What is the kanji for this reading ?", chosenWord.get("furigana").toString(), chosenWord.get("word").toString(), words.stream().map((word) -> word.get("word").toString()).toList(), null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -141,38 +141,6 @@ section {
     }
 }
 
-#options {
-    justify-self: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 1em;
-    gap: 1em;
-
-    .option-card {
-        width: clamp(100px, 30vw, 200px);
-        margin: 0;
-    }
-
-    .option-card:hover {
-        box-shadow: 0 0 10px 5px #00000052;
-        cursor: pointer;
-    }
-
-    .option-card:has(input:checked) {
-        background-color: var(--yellow);
-    }
-
-    .option-card:has(input:disabled) {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    input {
-        display: none;
-    }
-}
-
 #confirm-btn {
     background-color: var(--very-light-pink);
     color: var(--red);

@@ -20,10 +20,11 @@ public class QuizController {
     public QuizController(QuizService quizService) {
         this.quizService = quizService;
     }
+
     @GetMapping("/unit-test")
     public ResponseEntity<Quiz> getUnitTest(@RequestParam String grade, @RequestParam int test) {
         Quiz quiz = quizService.getUnitTest(grade, test);
-        if(quiz == null)
+        if (quiz == null)
             return ResponseEntity.of(Optional.empty());
         return ResponseEntity.ok(quiz);
     }
@@ -40,7 +41,7 @@ public class QuizController {
     @GetMapping("/practice-test")
     public ResponseEntity<Quiz> getPracticeTest(@RequestParam String type, @RequestParam String grade, @RequestParam int questions) {
         Quiz quiz = quizService.getPracticeTest(type, questions, grade);
-        if(quiz == null)
+        if (quiz == null)
             return ResponseEntity.of(Optional.empty());
         return ResponseEntity.ok(quiz);
     }
@@ -48,7 +49,7 @@ public class QuizController {
     @GetMapping("/skill-quiz")
     public ResponseEntity<Quiz> getSkillQuiz(@RequestParam int questions) {
         Quiz quiz = quizService.generateSkillQuiz(questions);
-        if(quiz == null)
+        if (quiz == null)
             return ResponseEntity.of(Optional.empty());
         return ResponseEntity.ok(quiz);
     }

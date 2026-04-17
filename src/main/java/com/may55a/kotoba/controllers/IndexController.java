@@ -44,6 +44,7 @@ public class IndexController {
         model.addAttribute("grade", grade);
         return "pages/Grade";
     }
+
     @GetMapping("/learn/grades/{grade}/kanji")
     public String learnKanji(@RequestParam String kanji, @RequestParam int id, @PathVariable String grade, Model model) {
         model.addAttribute("kanji", kanji);
@@ -97,5 +98,17 @@ public class IndexController {
     public String learnKanji(@PathVariable String kanji, Model model) {
         model.addAttribute("kanji", kanji);
         return "pages/Kanji";
+    }
+
+    @GetMapping("/quiz")
+    public String quizSetup(Model model) {
+        model.addAttribute("currentPath", "/quiz");
+        return "pages/QuizSetup";
+    }
+
+    @GetMapping("/quiz/start")
+    public String startQuiz(@RequestParam int questions, Model model) {
+        model.addAttribute("questions", questions);
+        return "pages/Quiz";
     }
 }

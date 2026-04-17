@@ -26,6 +26,20 @@ export async function fetchPracticeTest(type, nbQuestions, grade) {
         return await response.json();
     } catch (error) {
         console.error("Error fetching test :", error);
-        //window.location.href = "/error";
+        window.location.href = "/error";
+    }
+}
+
+export async function fetchSkillQuiz(nbQuestions) {
+    try {
+        let response = await fetch(`/api/quizzes/skill-quiz?questions=${nbQuestions}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching quiz :", error);
+        window.location.href = "/error";
     }
 }

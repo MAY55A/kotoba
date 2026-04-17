@@ -27,7 +27,7 @@ async function onShowResult(learningStats, result, testResultElem) {
                     <a href="/learn/grades/${grade}">Close</a>
                 </div>
                 <div class="result-right">
-                    <img alt="sad mascot" src="${MASCOT_MAP.failed}"><br>
+                    <img alt="sad mascot" src="${MASCOT_MAP.failed}">
                 </div>
         `;
     } else { // Test passed
