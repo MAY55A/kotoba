@@ -288,60 +288,6 @@ form button {
     }
 }
 
-.progress-info {
-    padding-top: 5em;
-    width: 70%;
-    text-align: center;
-    font-size: clamp(0.6em, 2vw, 0.8em);
-
-    > div {
-        background-color: var(--whitesh-yellow);
-        border: var(--dashed-pink-border);
-        box-shadow: 0 0 15px 0 hsla(0, 0%, 0%, 0.1);
-        border-radius: 10px;
-        padding: 1em;
-        margin-bottom: 1em;
-
-        table {
-            width: 100%;
-
-            td {
-                width: clamp(6em, 10vw, 10em);
-            }
-
-            td:nth-child(2) {
-                color: var(--saturated-pink);
-            }
-        }
-
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            justify-content: space-evenly;
-
-            div {
-                border: 2px solid #F6AEB938;
-                border-left-width: 5px;
-                border-top-width: 3px;
-                border-radius: 10px;
-                padding: 10px;
-            }
-
-            span {
-                white-space: nowrap;
-            }
-        }
-    }
-
-    h2 {
-        font-size: clamp(1em, 3vw, 1.5em);
-        color: var(--normal-font-color);
-        margin-bottom: 30px;
-    }
-}
-
-/* FLOAT ANIMATION */
 @keyframes float {
     0%, 100% {
         transform: translateY(0);
