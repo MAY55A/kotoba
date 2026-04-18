@@ -6,7 +6,7 @@
     font-size: clamp(0.6em, 2vw, 0.8em);
 
     > div {
-        padding: 1em;
+        padding: 1em 2em;
         margin-bottom: 1em;
 
         h2 {
@@ -67,4 +67,81 @@
             background: linear-gradient(90deg, #ffecb6, #ffca6f);
         }
     }
+}
+
+/* ACHIEVEMENTS SECTION */
+/* Container */
+.achievements-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.2em;
+    margin-top: 1em;
+}
+
+/* Card */
+.achievement-card {
+    min-width: fit-content;
+    max-width: 200px;
+    flex: 1 1 0;
+    background: var(--whitesh-yellow);
+    border: var(--dashed-pink-border);
+    border-width: 1px;
+    border-radius: 16px;
+    padding: 1em;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: 0.5s fadeInUp ease;
+}
+
+.achievement-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Badge */
+.badge-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.badge-wrapper img {
+    width: 70px;
+    height: auto;
+    transition: transform 0.2s ease;
+}
+
+.achievement-card:hover img {
+    transform: scale(1.1);
+}
+
+/* Text */
+.title {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--grey);
+}
+
+/* Empty state */
+.empty-achievements {
+    background-color: var(--whitesh-yellow);
+    border: var(--dashed-pink-border);
+    text-align: center;
+    color: var(--grey);
+    padding: 2em 0;
+}
+
+.empty-achievements p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5em;
 }

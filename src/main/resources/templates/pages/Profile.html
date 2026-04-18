@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta content="initial-scale=1, maximum-scale=1" name="viewport">
     <link rel="shortcut icon" th:href="@{/icons/kotoba.jpeg}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/styles/profile.css}">
@@ -13,7 +13,7 @@
 <main>
     <div class="user-banner">
         <div id="user-info">
-            <img src="" id="profile-picture" alt="profile picture">
+            <img alt="profile picture" id="profile-picture" src="">
             <div>
                 <div id="username"></div>
                 <p id="description"></p>
@@ -29,12 +29,12 @@
     </div>
     <div class="progress-info">
         <div th:replace="fragments/stats"></div>
-        <div class="achievements">
+        <div>
             <h2>Achievements</h2>
-            <div class="badges" id="achievements"></div>
+            <div id="achievements"></div>
         </div>
     </div>
 </main>
-<script type="module" th:src="@{/scripts/pages/profilePage.js}"></script>
+<script th:src="@{/scripts/pages/profilePage.js}" type="module"></script>
 </body>
 </html>

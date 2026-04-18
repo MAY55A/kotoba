@@ -1,54 +1,52 @@
+import {ACHIEVEMENTS} from "../utils/maps.js";
+
+function getAchievements(stats) {
+    const achievements = [];
+
+    for (const [, group] of Object.entries(ACHIEVEMENTS)) {
+        for (const ach of group) {
+            if (ach.condition(stats)) {
+                achievements.push(ach);
+            }
+        }
+    }
+
+    return achievements;
+}
+
 export function loadAchievements(learningStats) {
-    const achievements = document.getElementById("achievements");
+    const achievementsElem = document.getElementById("achievements");
+    achievementsElem.innerHTML = ""; // reset
 
-    if (learningStats.totalLearnedKanji >= 5) {
-        const achievement = document.createElement("div");
-        achievement.innerHTML = `
-            <img src="/images/kanjicat1.png" alt="Quiz Master Badge" width="50">
-            <span>First Step</span>
+    const achievements = getAchievements(learningStats);
+
+    if (achievements.length === 0) {
+        achievementsElem.innerHTML = `
+            <div class="empty-achievements">
+                <p>No achievements yet 🦊</p>
+                <span>Start learning to unlock your first badge!</span>
+            </div>
         `;
-        achievements.appendChild(achievement);
+        return;
     }
 
-    if (learningStats.gradeProgress >= 10) {
-        const achievement = document.createElement("div");
-        achievement.innerHTML = `
-            <img src="/images/girl2.png" alt="Grade Progress Badge" width="50" height="50">
-            <span>Progress Expert</span>
-        `;
-        achievements.appendChild(achievement);
-    }
+    achievementsElem.classList.add("achievements-grid");
 
-    // Achievement 1: XP >= 100
-    if (learningStats.xp >= 100) {
+    for (const ach of achievements) {
         const achievement = document.createElement("div");
-        achievement.innerHTML = `
-            <img src="/images/kanjicat1.png" alt="100 XP Badge" width="50" height="50">
-            <span>100 XP Badge</span>
-        `;
-        achievements.appendChild(achievement);
-    }
+        achievement.className = "achievement-card";
+        achievement.title = ach.desc;
 
-    // Achievement 2: Total learned kanji >= 50
-    if (learningStats.totalLearnedKanji >= 50) {
-        const achievement = document.createElement("div");
         achievement.innerHTML = `
-            <img src="/images/girl3.png" alt="Kanji Master Badge" width="50" height="50">
-            <span>Kanji Master</span>
+            <div class="badge-wrapper">
+                <img src="/images/badges/${ach.id}.png" alt="${ach.id} badge">
+            </div>
+            <div class="achievement-info">
+                <span class="title">${ach.title}</span>
+                <span class="desc">${ach.desc}</span>
+            </div>
         `;
-        achievements.appendChild(achievement);
-    }
 
-    // Achievement 3: Tests passed >= 10
-    if (learningStats.testsPassed >= 10) {
-        const achievement = document.createElement("div");
-        achievement.innerHTML = `
-            <img src="/images/kanjicat1.png" alt="Test Champion Badge" width="50" height="50">
-            <span>Test Champion</span>
-        `;
-        achievements.appendChild(achievement);
-    }
-    if (achievements.innerHTML == "") {
-        achievements.innerHTML = "You do not have any achievements yet !";
+        achievementsElem.appendChild(achievement);
     }
 }
