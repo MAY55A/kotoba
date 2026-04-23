@@ -34,6 +34,7 @@ async function onShowResult(learningStats, result, testResultElem) {
         let isNewTest = learningStats.currentGrade == grade &&
             (nbTest == "final" || learningStats.gradeProgress == nbTest * 10);
         if (isNewTest) {
+            learningStats.xp += result.stats.totalPoints;
             learningStats.testsPassed++;
             learningStats.gradeProgress++;
             if (nbTest === "final" && grade != 6) { // if it's the final test of a grade (not the last grade)

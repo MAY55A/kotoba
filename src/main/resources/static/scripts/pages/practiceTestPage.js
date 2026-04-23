@@ -7,13 +7,14 @@ const questionsCount = Number(document.getElementById("questions-count").value);
 const grade = (type === "grade") ? document.getElementById("grade").value : null;
 
 function onShowResult(learningStats, result, testResultElem) {
+    let earnedXP = result.stats.totalPoints / 5;
     result.content = `
                 <div class="result-left">
                 <h2>Practice Completed ! </h2>
                     <div class="scores">
                         <div class="earned">
                             <p>XP earned</p>
-                            <span>${result.stats.totalPoints}</span>
+                            <span>${earnedXP}</span>
                         </div>
                         <div class="correct-answers">
                             <p>Correct answers</p>
@@ -21,7 +22,7 @@ function onShowResult(learningStats, result, testResultElem) {
                         </div>
                         <div class="errors">
                             <p>Errors</p>
-                            <span>${result.stats.correctAnswers}</span>
+                            <span>${result.stats.errors}</span>
                         </div>
                         </div>
                     <a href="/practice">Close</a>
@@ -30,6 +31,7 @@ function onShowResult(learningStats, result, testResultElem) {
                     <img alt="tired mascot" src="${MASCOT_MAP.training}"><br>
                 </div>
         `;
+    learningStats.xp += earnedXP;
 }
 
 function onExit() {

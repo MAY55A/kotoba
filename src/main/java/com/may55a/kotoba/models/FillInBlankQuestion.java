@@ -8,7 +8,7 @@ public class FillInBlankQuestion extends Question {
         this.text = text;
         this.word = word;
         this.correctAnswer = correctAnswer;
-        this.points = 20;
+        this.points = 10;
         this.type = QuestionType.SHOW_KANJI;
     }
 

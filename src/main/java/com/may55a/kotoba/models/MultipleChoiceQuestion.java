@@ -16,7 +16,7 @@ public class MultipleChoiceQuestion extends Question {
         this.options = options;
         this.audio = audio;
         this.type = type;
-        this.points = 10;
+        this.points = 5;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class MultipleChoiceQuestion extends Question {
 
     @Override
     public boolean equals(Object o) {
-        if(o instanceof Question q) {
+        if (o instanceof Question q) {
             return q.type.equals(this.type) && q.text.equals(this.text) && Objects.equals(q.word, this.word);
         }
         return false;

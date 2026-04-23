@@ -145,7 +145,6 @@ export function displayTest(test, onShowResult, onExit, grade) {
     function showGoodResult(points) {
         playAudio("/sounds/correct.mp3");
         result.innerHTML = `<span class="correct">CORRECT !</span><br>
-                <span id="xp">+ ${points} XP</span><br>
                 <img src="${MASCOT_MAP.correct}" alt="excited mascot">`;
     }
 
@@ -163,7 +162,6 @@ export function displayTest(test, onShowResult, onExit, grade) {
         loading.classList.remove("hidden");
 
         let learningStats = await fetchLearningStats();
-        learningStats.xp += totalPoints;
         learningStats.errors += errors;
         learningStats.correctAnswers += correctAnswers;
 
